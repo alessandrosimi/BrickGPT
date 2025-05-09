@@ -22,10 +22,11 @@ Carnegie Mellon University
 
 ## Installation
 
-### Prerequisites: Gurobi
+### Prerequisites
 
-Running stability analysis requires a [Gurobi licence](https://www.gurobi.com/downloads/) to use Gurobi. Academics may
-request a free licence from the Gurobi website [here](https://www.gurobi.com/academia/academic-program-and-licenses/).
+- **Llama-3.2-1B-Instruct:** LegoGPT is fine-tuned from meta-llama/Llama-3.2-1B-Instruct, a gated model. Request access to the model [here](https://huggingface.co/meta-llama/Llama-3.2-1B-Instruct), then generate a [Hugging Face user access token](https://huggingface.co/docs/hub/en/security-tokens) and set it as an environment variable: `export HF_TOKEN=<your_token>`.
+- **Gurobi:** Running stability analysis requires a [Gurobi licence](https://www.gurobi.com/downloads/) to use Gurobi. Academics may
+request a free licence from the Gurobi website [here](https://www.gurobi.com/academia/academic-program-and-licenses/). After obtaining the licence, place it in your *home directory* or another [recommended location](https://support.gurobi.com/hc/en-us/articles/360013417211-Where-do-I-place-the-Gurobi-license-file-gurobi-lic).
 
 ### Installing as a standalone project
 
