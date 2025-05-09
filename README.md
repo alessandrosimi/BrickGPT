@@ -24,9 +24,15 @@ Carnegie Mellon University
 
 ### Prerequisites
 
-- **Llama-3.2-1B-Instruct:** LegoGPT is fine-tuned from meta-llama/Llama-3.2-1B-Instruct, a gated model. Request access to the model [here](https://huggingface.co/meta-llama/Llama-3.2-1B-Instruct), then generate a [Hugging Face user access token](https://huggingface.co/docs/hub/en/security-tokens) and set it as an environment variable: `export HF_TOKEN=<your_token>`. The model will be automatically downloaded upon running the code.
-- **Gurobi:** Running stability analysis requires a [Gurobi licence](https://www.gurobi.com/downloads/) to use Gurobi. Academics may
-request a free licence from the Gurobi website [here](https://www.gurobi.com/academia/academic-program-and-licenses/). After obtaining the licence, place it in your *home directory* or another [recommended location](https://support.gurobi.com/hc/en-us/articles/360013417211-Where-do-I-place-the-Gurobi-license-file-gurobi-lic).
+- **Llama-3.2-1B-Instruct:** LegoGPT is fine-tuned from meta-llama/Llama-3.2-1B-Instruct, a gated model. Request access
+  to the model [here](https://huggingface.co/meta-llama/Llama-3.2-1B-Instruct), then generate
+  a [Hugging Face user access token](https://huggingface.co/docs/hub/en/security-tokens) and set it as an environment
+  variable: `export HF_TOKEN=<your_token>`. The model will be automatically downloaded upon running the code.
+- **Gurobi:** Running stability analysis requires a [Gurobi licence](https://www.gurobi.com/downloads/) to use Gurobi.
+  Academics may request a free licence from the Gurobi
+  website [here](https://www.gurobi.com/academia/academic-program-and-licenses/). After obtaining the licence, place it
+  in your *home directory* or
+  another [recommended location](https://support.gurobi.com/hc/en-us/articles/360013417211-Where-do-I-place-the-Gurobi-license-file-gurobi-lic).
 
 ### Installing as a standalone project
 
@@ -37,11 +43,11 @@ project, first install all prerequisites. Then,
 2. *(Optional, required for running the `infer` script and texturing)* Follow these instructions to install ImportLDraw,
    required for rendering LEGO visualizations:
     - Install the ImportLDraw submodule with `git submodule update --init`.
-        - Some files in the ImportLDraw submodule are stored using the Git LFS system. To download these files,
-          install [Git LFS](https://git-lfs.com), `cd` into the ImportLDraw directory, and run
-          `git lfs pull`.
-    - Download the LDraw parts library `complete.zip` from [here](https://library.ldraw.org/updates?latest), and
-      extract it in your *home directory*.
+    - Download the [LDraw parts library](https://library.ldraw.org/library/updates/complete.zip) and
+      extract it in your *home directory*:
+      `(cd ~ && wget https://library.ldraw.org/library/updates/complete.zip && unzip complete.zip)`.
+        - If you wish to put the LDraw parts library in a different directory, set the environment variable
+          `LDRAW_LIBRARY_PATH` to the path of the `ldraw` directory: `export LDRAW_LIBRARY_PATH=path/to/ldraw`
 3. Finally, [install uv](https://docs.astral.sh/uv/getting-started/installation/), and run `uv sync` to create a Python
    virtual environment with all dependencies installed. Python dependencies are defined in `pyproject.toml`.
 
