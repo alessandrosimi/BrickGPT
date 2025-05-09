@@ -47,7 +47,7 @@ project, first install all prerequisites. Then,
       extract it in your *home directory*:
       `(cd ~ && wget https://library.ldraw.org/library/updates/complete.zip && unzip complete.zip)`.
         - If you wish to put the LDraw parts library in a different directory, set the environment variable
-          `LDRAW_LIBRARY_PATH` to the path of the `ldraw` directory: `export LDRAW_LIBRARY_PATH=path/to/ldraw`
+          `LDRAW_LIBRARY_PATH` to the path of the `ldraw` directory: `export LDRAW_LIBRARY_PATH=path/to/ldraw`.
 3. Finally, [install uv](https://docs.astral.sh/uv/getting-started/installation/), and run `uv sync` to create a Python
    virtual environment with all dependencies installed. Python dependencies are defined in `pyproject.toml`.
 
