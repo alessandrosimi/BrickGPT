@@ -16,7 +16,11 @@ from ImportLDraw.loadldraw.loadldraw import Options, Configure, loadFromFile, Fi
 import bmesh
 
 PLUGIN_PATH = Path(ImportLDraw.__file__).parent
-LDRAW_LIB_PATH = Path.home() / 'ldraw'
+LDRAW_LIB_PATH = os.environ.get('LDRAW_LIBRARY_PATH')
+if not LDRAW_LIB_PATH or not os.path.exists(LDRAW_LIB_PATH):
+    # Default path to LDraw library is home directory
+    LDRAW_LIB_PATH = Path.home() / 'ldraw'
+LDRAW_LIB_PATH = os.path.abspath(LDRAW_LIB_PATH)
 
 bpy.data.scenes[0].render.engine = "CYCLES"
 
