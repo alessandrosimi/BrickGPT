@@ -3,7 +3,7 @@
 <div>
 <a href="https://avalovelace1.github.io/LegoGPT/"><img src="https://img.shields.io/badge/Project_Page-Website-green?logo=googlechrome&logoColor=white" alt="Project Page" height=22px></a>
 <a href="https://arxiv.org/abs/2505.05469" target="_blank"><img src=https://img.shields.io/badge/ArXiv-Paper-b5212f.svg?logo=arxiv alt="ArXiv" height=22px></a>
-<a href="" target="_blank"><img src=https://img.shields.io/badge/%F0%9F%A4%97%20HuggingFace-Demo-blue.svg alt="HuggingFace" height=22px></a>
+<a href="https://huggingface.co/spaces/cmu-gil/LegoGPT-Demo" target="_blank"><img src=https://img.shields.io/badge/%F0%9F%A4%97%20HuggingFace-Demo-blue.svg alt="HuggingFace" height=22px></a>
 </div>
 
 This is the official repository for **LegoGPT**, the first approach for generating physically stable LEGO
