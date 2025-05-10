@@ -85,6 +85,19 @@ class LegoGPTConfig:
         kw_only=True,
         metadata={'help': 'The format of the LEGO-generating instruction to give to the LLM.'},
     )
+    device: Literal['auto', 'cuda', 'mps', 'cpu'] = field(
+        default='auto',
+        kw_only=True,
+        metadata={'help': 'The device to use for inference. '
+                          'If "auto", will be set to "cuda" if available, otherwise "mps" if available, otherwise "cpu".'},
+    )
+
+
+def get_device() -> str:
+    if torch.backends.mps.is_available() and torch.backends.mps.is_built():
+        return 'mps'  # Apple Silicon
+    else:
+        return 'cuda' if torch.cuda.is_available() else 'cpu'
 
 
 class LegoGPT:
@@ -99,7 +112,7 @@ class LegoGPT:
         self.max_temperature = cfg.max_temperature
         self.top_k = cfg.top_k
         self.top_p = cfg.top_p
-        self.device = 'cuda' if torch.cuda.is_available() else 'cpu'
+        self.device = get_device() if cfg.device == 'auto' else cfg.device
 
         instruction_fns = {
             'legogpt': create_instruction,

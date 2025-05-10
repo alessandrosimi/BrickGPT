@@ -572,7 +572,7 @@ wheels = [
 
 [[package]]
 name = "legogpt"
-version = "0.1.0"
+version = "0.1.2"
 source = { editable = "." }
 dependencies = [
     { name = "bpy" },
@@ -596,7 +596,7 @@ dev = [
 
 [package.metadata]
 requires-dist = [
-    { name = "bpy", specifier = ">=4.4.0" },
+    { name = "bpy", specifier = ">=4.3.0" },
     { name = "gurobipy", specifier = ">=12.0.1" },
     { name = "numpy", specifier = "<2" },
     { name = "peft", specifier = ">=0.15.0" },
