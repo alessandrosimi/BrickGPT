@@ -1,3 +1,5 @@
+import time
+
 from legogpt.data import LegoStructure
 from legogpt.models import LLM, LegoGPT, LegoGPTConfig, create_instruction
 
@@ -36,8 +38,11 @@ def test_finetuned_llm():
 
     prompt_txt = llm.tokenizer.decode(prompt[0])
     print(prompt_txt)
+    start_time = time.time()
     output = llm(prompt, max_new_tokens=8192)
+    end_time = time.time()
     print(output)
+    print(f'Time taken: {end_time - start_time:.2f}s')
 
 
 def test_infer():
@@ -45,12 +50,16 @@ def test_infer():
     Runs LegoGPT inference on a simple prompt.
     """
     legogpt = LegoGPT(LegoGPTConfig(LEGOGPT_PATH))
+
+    start_time = time.time()
     output = legogpt('A basic chair with four legs.')
+    end_time = time.time()
 
     print(output['lego'])
     print('# of bricks:', len(output['lego']))
     print('Brick rejection reasons:', output['rejection_reasons'])
     print('# regenerations:', output['n_regenerations'])
+    print(f'Time taken: {end_time - start_time:.2f}s')
 
 
 def test_finish_partial_structure():
