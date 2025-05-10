@@ -161,6 +161,13 @@ Then, follow these instructions:
    `uv run ./scripts/finetune.zsh [PRETRAINED_DIR] [OUTPUT_DIR] [RUN_NAME] [FINETUNING_DATASET_PATH]`. The
    fine-tuned model will be saved to `[OUTPUT_DIR]/[RUN_NAME]`.
 
+## Licence
+
+The LegoGPT model, StableText2Lego dataset, and majority of the LegoGPT code are licensed under the [MIT License](https://github.com/AvaLovelace1/LegoGPT/blob/main/LICENSE). The following submodules may have different licenses:
+
+- **[ImportLDraw](https://github.com/TobyLobster/ImportLDraw)**: For visualizing LEGO structures, we used ImportLDraw, available under the [LICENSE](https://github.com/TobyLobster/ImportLDraw/blob/master/LICENSE).
+- **[FlashTex](https://github.com/Roblox/FlashTex)**: For LEGO texturing and coloring, we used FlashTex, available under the [LICENCE](https://github.com/Roblox/FlashTex/blob/main/LICENSE).
+
 ## Citation
 
 If you find this repository useful for your research, please cite the following work.
