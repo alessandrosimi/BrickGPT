@@ -9,7 +9,8 @@
 This is the official repository for **LegoGPT**, the first approach for generating physically stable LEGO
 brick models from text prompts.
 
-<video src='https://github.com/user-attachments/assets/2e5e8eeb-fec1-4643-b739-550ae3420ee1' width=480/></video>
+<video src='https://github.com/user-attachments/assets/cec2cb09-f1de-443f-9c1b-0f17896336a7' width=480/></video>
+
 
 ***Generating Physically Stable and Buildable LEGO® Designs from Text***  
 [Ava Pun*](https://avapun.com/),
