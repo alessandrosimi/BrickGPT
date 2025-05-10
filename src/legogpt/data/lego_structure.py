@@ -139,6 +139,11 @@ class LegoStructure:
     def __repr__(self):
         return self.to_txt()
 
+    def __eq__(self, other) -> bool:
+        if not isinstance(other, LegoStructure):
+            return NotImplemented
+        return self.bricks == other.bricks
+
     def to_json(self) -> dict:
         return {str(i + 1): brick.to_json() for i, brick in enumerate(self.bricks)}
 
