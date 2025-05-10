@@ -133,7 +133,7 @@ software.
 ## Running texturing
 
 The subdirectory `src/texture` contains the code for generating the UV texture or per-brick color given a LEGO design.
-To run texturing, `cd` into `src/texture` and follow the instructions in the `README.md` file there.
+To run texturing, `cd` into `src/texture` and follow the instructions in the `README.md` file [there](src/texture).
 
 ## Running fine-tuning
 
