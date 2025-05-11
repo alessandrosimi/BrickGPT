@@ -9,7 +9,8 @@
 This is the official repository for **LegoGPT**, the first approach for generating physically stable LEGO
 brick models from text prompts.
 
-<img src="assets/teaser.jpg" alt="Teaser figure"/>
+<video src='https://github.com/user-attachments/assets/cec2cb09-f1de-443f-9c1b-0f17896336a7' width=480/></video>
+
 
 ***Generating Physically Stable and Buildable LEGO® Designs from Text***  
 [Ava Pun*](https://avapun.com/),
@@ -19,6 +20,8 @@ brick models from text prompts.
 [Changliu Liu](https://www.ri.cmu.edu/ri-faculty/changliu-liu/),
 [Jun-Yan Zhu](https://www.cs.cmu.edu/~junyanz/)  
 Carnegie Mellon University
+
+<img src="assets/teaser.jpg" alt="Teaser figure"/>
 
 ## Installation
 
@@ -130,7 +133,7 @@ software.
 ## Running texturing
 
 The subdirectory `src/texture` contains the code for generating the UV texture or per-brick color given a LEGO design.
-To run texturing, `cd` into `src/texture` and follow the instructions in the `README.md` file there.
+To run texturing, `cd` into `src/texture` and follow the instructions in the `README.md` file [there](src/texture).
 
 ## Running fine-tuning
 
