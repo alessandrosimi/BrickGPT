@@ -1,7 +1,3 @@
-[submodule "ImportLDraw"]
-	path = ImportLDraw
-	url = https://github.com/sgebbie/ImportLDraw.git
-	branch = bugfix/material-fabric-warning
 [submodule "src/texture/FlashTex"]
 	path = src/texture/FlashTex
 	url = https://github.com/Roblox/FlashTex.git
