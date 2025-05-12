@@ -133,11 +133,10 @@ class LegoGPT:
         for regeneration_num in range(self.max_regenerations + 1):
             lego, rejection_reasons_lego = self._generate_structure(caption, starting_lego=starting_lego)
             rejection_reasons.update(rejection_reasons_lego)
-            if lego.is_stable():
+            if self.max_regenerations == 0 or lego.is_stable():
                 break
             if regeneration_num == self.max_regenerations:
-                if self.max_regenerations > 0:
-                    warnings.warn(f'Failed to generate a stable structure after {regeneration_num + 1} attempts.\n')
+                warnings.warn(f'Failed to generate a stable structure after {regeneration_num + 1} attempts.\n')
                 break
             starting_lego = _remove_all_bricks_after_first_unstable_brick(lego)
 
@@ -203,17 +202,18 @@ class LegoGPT:
             brick = self.generate_brick(prompt, temperature=temperature)
             if not brick:  # EOS token was generated
                 break
+            if self.max_brick_rejections == 0:
+                break
 
             # Check if the generated brick is valid
             add_brick_result = self._try_adding_brick(brick, lego, rejected_bricks)
             if add_brick_result == 'success':
                 break
             if generation_num == self.max_brick_rejections:
-                if self.max_brick_rejections > 0:
-                    warnings.warn(f'Failed to generate a valid brick after {generation_num + 1} attempts.\n'
-                                  f'Last generated brick: {brick}\n'
-                                  f'Reasons for rejection: {rejection_reasons}\n'
-                                  f'Lego structure: {lego.to_txt()}\n')
+                warnings.warn(f'Failed to generate a valid brick after {generation_num + 1} attempts.\n'
+                              f'Last generated brick: {brick}\n'
+                              f'Reasons for rejection: {rejection_reasons}\n'
+                              f'Lego structure: {lego.to_txt()}\n')
                 break
 
             # Reset if brick is invalid
