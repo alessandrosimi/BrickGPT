@@ -11,7 +11,6 @@ brick models from text prompts.
 
 <video src='https://github.com/user-attachments/assets/cec2cb09-f1de-443f-9c1b-0f17896336a7' width=480/></video>
 
-
 ***Generating Physically Stable and Buildable LEGO® Designs from Text***  
 [Ava Pun*](https://avapun.com/),
 [Kangle Deng*](https://dunbar12138.github.io/),
@@ -45,8 +44,10 @@ project, first install all prerequisites. Then,
 1. Clone the repo: `git clone "https://github.com/AvaLovelace1/LegoGPT.git" && cd LegoGPT`.
 2. *(Optional, required for running the `infer` script and texturing)* Follow these instructions to install ImportLDraw,
    required for rendering LEGO visualizations:
-    - Download [Git LFS](https://git-lfs.com), then run `git lfs install`.
     - Install the ImportLDraw submodule with `git submodule update --init`.
+    - Download
+      this [background exr file](https://drive.google.com/file/d/1Yux0sEqWVpXGMT9Z5J094ISfvxhH-_5K/view?usp=share_link)
+      and place it in the `ImportLDraw/loadldraw` subdirectory.
     - Download the [LDraw parts library](https://library.ldraw.org/library/updates/complete.zip) and
       extract it in your *home directory*:
       `(cd ~ && wget https://library.ldraw.org/library/updates/complete.zip && unzip complete.zip)`.
@@ -166,10 +167,14 @@ Then, follow these instructions:
 
 ## Licence
 
-The LegoGPT model, StableText2Lego dataset, and majority of the LegoGPT code are licensed under the [MIT License](https://github.com/AvaLovelace1/LegoGPT/blob/main/LICENSE). The following submodules may have different licenses:
+The LegoGPT model, StableText2Lego dataset, and majority of the LegoGPT code are licensed under
+the [MIT License](https://github.com/AvaLovelace1/LegoGPT/blob/main/LICENSE). The following submodules may have
+different licenses:
 
-- **[ImportLDraw](https://github.com/TobyLobster/ImportLDraw)**: For visualizing LEGO structures, we used ImportLDraw, available under the [LICENSE](https://github.com/TobyLobster/ImportLDraw/blob/master/LICENSE).
-- **[FlashTex](https://github.com/Roblox/FlashTex)**: For LEGO texturing and coloring, we used FlashTex, available under the [LICENCE](https://github.com/Roblox/FlashTex/blob/main/LICENSE).
+- **[ImportLDraw](https://github.com/TobyLobster/ImportLDraw)**: For visualizing LEGO structures, we used ImportLDraw,
+  available under the [LICENSE](https://github.com/TobyLobster/ImportLDraw/blob/master/LICENSE).
+- **[FlashTex](https://github.com/Roblox/FlashTex)**: For LEGO texturing and coloring, we used FlashTex, available under
+  the [LICENCE](https://github.com/Roblox/FlashTex/blob/main/LICENSE).
 
 ## Citation
 
