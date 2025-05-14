@@ -6,11 +6,6 @@
 <a href="https://huggingface.co/spaces/cmu-gil/LegoGPT-Demo" target="_blank"><img src=https://img.shields.io/badge/%F0%9F%A4%97%20HuggingFace-Demo-blue.svg alt="HuggingFace" height=22px></a>
 </div>
 
-This is the official repository for **LegoGPT**, the first approach for generating physically stable LEGO
-brick models from text prompts.
-
-<video src='https://github.com/user-attachments/assets/cec2cb09-f1de-443f-9c1b-0f17896336a7' width=480/></video>
-
 ***Generating Physically Stable and Buildable LEGO® Designs from Text***  
 [Ava Pun*](https://avapun.com/),
 [Kangle Deng*](https://dunbar12138.github.io/),
@@ -20,7 +15,24 @@ brick models from text prompts.
 [Jun-Yan Zhu](https://www.cs.cmu.edu/~junyanz/)  
 Carnegie Mellon University
 
+---
+
+This is the official repository for **LegoGPT**, the first approach for generating physically stable LEGO
+brick models from text prompts.
+
+<video src='https://github.com/user-attachments/assets/cec2cb09-f1de-443f-9c1b-0f17896336a7' width=480/></video>
+
 <img src="assets/teaser.jpg" alt="Teaser figure"/>
+
+## Results
+
+Examples of generated LEGO structures assembled by humans:
+
+<img src="assets/human_exec.jpg" alt="Examples of generated LEGO models assembled by humans"/>
+
+Examples of textured and colored LEGO models:
+
+<img src="assets/texture.jpg" alt="Examples of LEGO models generated with textures and colors"/>
 
 ## Installation
 
