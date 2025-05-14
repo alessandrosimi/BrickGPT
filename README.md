@@ -18,7 +18,7 @@ brick models from text prompts.
 [Deva Ramanan](https://www.cs.cmu.edu/~deva/),
 [Changliu Liu](https://www.ri.cmu.edu/ri-faculty/changliu-liu/),
 [Jun-Yan Zhu](https://www.cs.cmu.edu/~junyanz/)  
-Carnegie Mellon University 
+Carnegie Mellon University<br>
 arXiv 2025
 
 <img src="assets/teaser.jpg" alt="Teaser figure"/>
