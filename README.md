@@ -23,8 +23,6 @@ brick models from text prompts.
 
 <video src='https://github.com/user-attachments/assets/cec2cb09-f1de-443f-9c1b-0f17896336a7' width=480/></video>
 
-<img src="assets/teaser.jpg" alt="Teaser figure"/>
-
 ## Results
 
 Examples of generated LEGO structures assembled by humans:
