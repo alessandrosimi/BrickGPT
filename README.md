@@ -18,7 +18,8 @@ brick models from text prompts.
 [Deva Ramanan](https://www.cs.cmu.edu/~deva/),
 [Changliu Liu](https://www.ri.cmu.edu/ri-faculty/changliu-liu/),
 [Jun-Yan Zhu](https://www.cs.cmu.edu/~junyanz/)  
-Carnegie Mellon University
+Carnegie Mellon University 
+arXiv 2025
 
 <img src="assets/teaser.jpg" alt="Teaser figure"/>
 
@@ -30,9 +31,9 @@ Carnegie Mellon University
   to the model [here](https://huggingface.co/meta-llama/Llama-3.2-1B-Instruct), then generate
   a [Hugging Face user access token](https://huggingface.co/docs/hub/en/security-tokens) and set it as an environment
   variable: `export HF_TOKEN=<your_token>`. The model will be automatically downloaded upon running the code.
-- **Gurobi:** Running stability analysis requires a [Gurobi licence](https://www.gurobi.com/downloads/) to use Gurobi.
-  Academics may request a free licence from the Gurobi
-  website [here](https://www.gurobi.com/academia/academic-program-and-licenses/). After obtaining the licence, place it
+- **Gurobi:** Running stability analysis requires a [Gurobi license](https://www.gurobi.com/downloads/) to use Gurobi.
+  Academics may request a free license from the Gurobi
+  website [here](https://www.gurobi.com/academia/academic-program-and-licenses/). After obtaining the license, place it
   in your *home directory* or
   another [recommended location](https://support.gurobi.com/hc/en-us/articles/360013417211-Where-do-I-place-the-Gurobi-license-file-gurobi-lic).
 
@@ -81,7 +82,7 @@ uv run infer
 ```
 
 This script starts an interactive session where you can input a prompt and get a response from the model.
-The model weights will automatically be downloaded from Hugging Face; they can be
+The model weights will automatically be downloaded from Hugging Face. They can be
 found [here](https://huggingface.co/AvaLovelace/LegoGPT).
 
 If you wish to run inference with a different set of model weights, specify them using the `--model_name_or_path`
@@ -165,7 +166,7 @@ Then, follow these instructions:
    `uv run ./scripts/finetune.zsh [PRETRAINED_DIR] [OUTPUT_DIR] [RUN_NAME] [FINETUNING_DATASET_PATH]`. The
    fine-tuned model will be saved to `[OUTPUT_DIR]/[RUN_NAME]`.
 
-## Licence
+## License
 
 The LegoGPT model, StableText2Lego dataset, and majority of the LegoGPT code are licensed under
 the [MIT License](https://github.com/AvaLovelace1/LegoGPT/blob/main/LICENSE). The following submodules may have
@@ -174,7 +175,7 @@ different licenses:
 - **[ImportLDraw](https://github.com/TobyLobster/ImportLDraw)**: For visualizing LEGO structures, we used ImportLDraw,
   available under the [LICENSE](https://github.com/TobyLobster/ImportLDraw/blob/master/LICENSE).
 - **[FlashTex](https://github.com/Roblox/FlashTex)**: For LEGO texturing and coloring, we used FlashTex, available under
-  the [LICENCE](https://github.com/Roblox/FlashTex/blob/main/LICENSE).
+  the [LICENSE](https://github.com/Roblox/FlashTex/blob/main/LICENSE).
 
 ## Citation
 
