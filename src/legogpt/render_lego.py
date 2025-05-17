@@ -40,9 +40,10 @@ def render_lego(
         bpy.data.scenes[0].render.engine = 'CYCLES'
 
         # Set the device_type
-        bpy.context.preferences.addons[
-            'cycles'
-        ].preferences.compute_device_type = 'CUDA'
+        if sys.platform == 'darwin':  # macOS
+            bpy.context.preferences.addons['cycles'].preferences.compute_device_type = 'METAL'
+        else:
+            bpy.context.preferences.addons['cycles'].preferences.compute_device_type = 'CUDA'
 
         # Set the device and feature set
         bpy.context.scene.cycles.device = 'GPU'
@@ -53,7 +54,7 @@ def render_lego(
         print(bpy.context.preferences.addons['cycles'].preferences.compute_device_type)
         for d in bpy.context.preferences.addons['cycles'].preferences.devices:
             d['use'] = 0
-            if d['name'][:6] == 'NVIDIA':
+            if d['name'].startswith('NVIDIA') or d['name'].startswith('Apple'):
                 d['use'] = 1
             print(d['name'], d['use'])
 
