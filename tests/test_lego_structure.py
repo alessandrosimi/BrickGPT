@@ -68,6 +68,16 @@ def test_stability_check(brick_txt: str, is_stable: bool):
 
 
 @pytest.mark.parametrize(
+    'brick_txt,is_connected', [
+        ('2x6 (0,0,0)\n2x6 (2,0,0)\n', True),
+        ('2x6 (0,0,1)\n2x6 (0,0,2)\n', False),
+    ])
+def test_connectivity_check(brick_txt: str, is_connected: bool):
+    lego = LegoStructure.from_txt(brick_txt)
+    assert lego.is_connected() == is_connected
+
+
+@pytest.mark.parametrize(
     'brick_txt,is_in_bounds', [
         ('2x6 (0,0,0)\n', True),
         ('2x6 (18,0,0)\n', True),

@@ -4,7 +4,7 @@ from dataclasses import dataclass
 
 import numpy as np
 
-from legogpt.stability_analysis import stability_score, StabilityConfig
+from legogpt.stability_analysis import stability_score, StabilityConfig, connectivity_score
 from .lego_library import (lego_library,
                            dimensions_to_brick_id, brick_id_to_dimensions,
                            brick_id_to_part_id, part_id_to_brick_id)
@@ -199,6 +199,19 @@ class LegoStructure:
             raise ValueError('Cannot compute stability scores - structure has out of bounds bricks.')
         scores, _, _, _, _ = stability_score(self.to_json(), lego_library,
                                              StabilityConfig(world_dimension=(self.world_dim,) * 3))
+        return scores
+
+    def is_connected(self) -> bool:
+        if self.has_floating_bricks() or self.has_collisions():
+            return False
+        return self.connectivity_scores().max() < 1
+
+    def connectivity_scores(self) -> np.ndarray:
+        if self.has_collisions():
+            raise ValueError('Cannot compute connectivity scores - structure has colliding bricks.')
+        if self.has_out_of_bounds_bricks():
+            raise ValueError('Cannot compute connectivity scores - structure has out of bounds bricks.')
+        scores = connectivity_score(self)
         return scores
 
     @classmethod

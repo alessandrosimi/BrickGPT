@@ -52,6 +52,13 @@ class LegoGPTConfig:
                           'if it is physically unstable. '
                           'Set to 0 if you want to disable physics-informed rollback.'},
     )
+    use_gurobi: bool = field(
+        default=True,
+        kw_only=True,
+        metadata={'help': 'Whether to use Gurobi to check if structures are stable during physics-informed rollback. '
+                          'If False, will default to a simpler, but less accurate connectivity-based stability check. '
+                          'This option is useful if you do not have a Gurobi licence.'},
+    )
     temperature: float = field(
         default=0.6,
         kw_only=True,
@@ -107,6 +114,7 @@ class LegoGPT:
         self.max_brick_rejections = cfg.max_brick_rejections
         self.use_logit_masking = cfg.use_logit_masking
         self.max_regenerations = cfg.max_regenerations
+        self.use_gurobi = cfg.use_gurobi
         self.temperature = cfg.temperature
         self.temperature_increase = cfg.temperature_increase
         self.max_temperature = cfg.max_temperature
@@ -133,12 +141,12 @@ class LegoGPT:
         for regeneration_num in range(self.max_regenerations + 1):
             lego, rejection_reasons_lego = self._generate_structure(caption, starting_lego=starting_lego)
             rejection_reasons.update(rejection_reasons_lego)
-            if self.max_regenerations == 0 or lego.is_stable():
+            if self.max_regenerations == 0 or self._is_stable(lego):
                 break
             if regeneration_num == self.max_regenerations:
                 warnings.warn(f'Failed to generate a stable structure after {regeneration_num + 1} attempts.\n')
                 break
-            starting_lego = _remove_all_bricks_after_first_unstable_brick(lego)
+            starting_lego = self._remove_all_bricks_after_first_unstable_brick(lego)
 
         return {
             'lego': lego,
@@ -346,6 +354,24 @@ class LegoGPT:
 
         return allowed_token_ids_fn
 
+    def _is_stable(self, lego: LegoStructure) -> bool:
+        return lego.is_stable() if self.use_gurobi else lego.is_connected()
+
+    def _stability_scores(self, lego: LegoStructure) -> np.ndarray:
+        return lego.stability_scores() if self.use_gurobi else lego.connectivity_scores()
+
+    def _remove_all_bricks_after_first_unstable_brick(self, lego: LegoStructure) -> LegoStructure:
+        """
+        Removes all bricks starting from the first unstable brick. Repeats this process until the lego is stable.
+        """
+        while True:
+            if self._is_stable(lego):
+                return lego
+            scores = self._stability_scores(lego)
+            first_unstable_brick_idx = next((i for i, brick in enumerate(lego.bricks)
+                                             if np.any(scores[brick.slice] >= 1)), -1)
+            lego = LegoStructure(lego.bricks[:first_unstable_brick_idx])
+
 
 def create_instruction(caption: str) -> str:
     instruction = ('Create a LEGO model of the input. Format your response as a list of bricks: '
@@ -386,16 +412,3 @@ def create_instruction_few_shot(caption: str) -> str:
 
 def _create_example_instruction(x: dict) -> str:
     return f'### Input:\n{x["caption"]}\n\n### Output:\n{x["lego"]}'
-
-
-def _remove_all_bricks_after_first_unstable_brick(lego: LegoStructure) -> LegoStructure:
-    """
-    Removes all bricks starting from the first unstable brick. Repeats this process until the lego is stable.
-    """
-    while True:
-        if lego.is_stable():
-            return lego
-        scores = lego.stability_scores()
-        first_unstable_brick_idx = next((i for i, brick in enumerate(lego.bricks)
-                                         if np.any(scores[brick.slice] >= 1)), -1)
-        lego = LegoStructure(lego.bricks[:first_unstable_brick_idx])

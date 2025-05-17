@@ -41,11 +41,13 @@ Examples of textured and colored LEGO models:
   to the model [here](https://huggingface.co/meta-llama/Llama-3.2-1B-Instruct), then generate
   a [Hugging Face user access token](https://huggingface.co/docs/hub/en/security-tokens) and set it as an environment
   variable: `export HF_TOKEN=<your_token>`. The model will be automatically downloaded upon running the code.
-- **Gurobi:** Running stability analysis requires a [Gurobi license](https://www.gurobi.com/downloads/) to use Gurobi.
-  Academics may request a free license from the Gurobi
-  website [here](https://www.gurobi.com/academia/academic-program-and-licenses/). After obtaining the license, place it
-  in your *home directory* or
+- **Gurobi (optional but recommended):** Running stability analysis requires
+  a [Gurobi license](https://www.gurobi.com/downloads/) to use Gurobi. Academics may request a free license from the
+  Gurobi website [here](https://www.gurobi.com/academia/academic-program-and-licenses/); after obtaining the license,
+  place it in your *home directory* or
   another [recommended location](https://support.gurobi.com/hc/en-us/articles/360013417211-Where-do-I-place-the-Gurobi-license-file-gurobi-lic).
+    - If you do not have access to Gurobi, you can run the code with the option `--use_gurobi False` to use a simpler
+      but less accurate connectivity-based method instead of physics-based stability analysis.
 
 ### Installing as a standalone project
 
