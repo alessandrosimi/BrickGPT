@@ -148,9 +148,9 @@ def mesh_to_colored_voxels(obj_file="voxel_mesh.obj",
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
-    parser.add_argument("--fname", type=str, default="/data/speedy/Projects/lego/LegoGPT/texture_pipeline/FlashTex/output/brick_texture/guitar/parlor/texture_kd.png")
-    parser.add_argument("--obj_file", type=str, default="/data/speedy/Projects/lego/LegoGPT/texture_pipeline/brick_texture/voxel_mesh.obj")
-    parser.add_argument("--mapping_file", type=str, default="/data/speedy/Projects/lego/LegoGPT/texture_pipeline/brick_texture/voxel_mapping.json")
+    parser.add_argument("--fname", type=str, default="/data/speedy/Projects/lego/BrickGPT/texture_pipeline/FlashTex/output/brick_texture/guitar/parlor/texture_kd.png")
+    parser.add_argument("--obj_file", type=str, default="/data/speedy/Projects/lego/BrickGPT/texture_pipeline/brick_texture/voxel_mesh.obj")
+    parser.add_argument("--mapping_file", type=str, default="/data/speedy/Projects/lego/BrickGPT/texture_pipeline/brick_texture/voxel_mapping.json")
     parser.add_argument("--output_dir", type=str, default="out/")
     args = parser.parse_args()
 
@@ -158,29 +158,6 @@ if __name__ == "__main__":
     voxel_grid, sampled_colors, colored_voxels = mesh_to_colored_voxels(texture_file=args.fname, obj_file=args.obj_file, 
                                                                         mapping_file=args.mapping_file,
                                                                         output_file=os.path.join(args.output_dir, "colored_voxels.png"))
-
-
-    # # Check if the voxel grid is the same as the original voxel grid
-    # from voxel_to_uvs import json2vox, load_json
-    # fname = "../example/task_graph.json"
-    # lego_json = load_json(fname)
-    # dimension = [20, 20, 20]
-    # original_voxel_grid = json2vox(lego_json, dim=dimension)
-
-    # original_voxel_grid = np.swapaxes(original_voxel_grid, 2, 1)
-    # print(original_voxel_grid.shape, voxel_grid.shape)
-    # print(np.all(original_voxel_grid == (colored_voxels.sum(axis=3) > 0)))
-
-    # union = np.logical_or(original_voxel_grid, colored_voxels.sum(axis=3) > 0)
-
-    # # visualize the union
-    # from matplotlib import pyplot as plt
-    # fig = plt.figure()
-    # ax = fig.add_subplot(111, projection='3d')
-    # ax.voxels(union, edgecolor='black', linewidth=0.5)
-    # plt.savefig("union_voxels.png", bbox_inches='tight', dpi=300)
-    # plt.close()
-
 
     print(colored_voxels.shape, voxel_grid.shape)
     colored_voxels = colored_voxels[::-1, :, ::-1]

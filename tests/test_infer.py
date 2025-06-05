@@ -1,9 +1,9 @@
 import time
 
-from legogpt.data import LegoStructure
-from legogpt.models import LLM, LegoGPT, LegoGPTConfig, create_instruction
+from brickgpt.data import BrickStructure
+from brickgpt.models import LLM, BrickGPT, BrickGPTConfig, create_instruction
 
-LEGOGPT_PATH = 'AvaLovelace/LegoGPT'
+BRICKGPT_PATH = 'AvaLovelace/BrickGPT'
 
 
 def test_llm():
@@ -27,9 +27,9 @@ def test_llm():
 
 def test_finetuned_llm():
     """
-    Tests running the finetuned LegoGPT model with no other guidance (e.g. rejection sampling).
+    Tests running the finetuned BrickGPT model with no other guidance (e.g. rejection sampling).
     """
-    llm = LLM(LEGOGPT_PATH)
+    llm = LLM(BRICKGPT_PATH)
     messages = [
         {'role': 'system', 'content': 'You are a helpful assistant.'},
         {'role': 'user', 'content': create_instruction('A basic chair with four legs.')},
@@ -47,16 +47,16 @@ def test_finetuned_llm():
 
 def test_infer():
     """
-    Runs LegoGPT inference on a simple prompt.
+    Runs BrickGPT inference on a simple prompt.
     """
-    legogpt = LegoGPT(LegoGPTConfig(LEGOGPT_PATH))
+    brickgpt = BrickGPT(BrickGPTConfig(BRICKGPT_PATH))
 
     start_time = time.time()
-    output = legogpt('A basic chair with four legs.')
+    output = brickgpt('A basic chair with four legs.')
     end_time = time.time()
 
-    print(output['lego'])
-    print('# of bricks:', len(output['lego']))
+    print(output['bricks'])
+    print('# of bricks:', len(output['bricks']))
     print('Brick rejection reasons:', output['rejection_reasons'])
     print('# regenerations:', output['n_regenerations'])
     print(f'Time taken: {end_time - start_time:.2f}s')
@@ -64,11 +64,11 @@ def test_infer():
 
 def test_finish_partial_structure():
     partial_structure_txt = '1x1 (2,19,0)\n1x4 (2,15,0)\n1x8 (2,7,0)\n1x1 (1,6,0)\n2x2 (0,18,0)\n2x1 (0,17,0)\n2x6 (0,11,0)\n'
-    partial_lego = LegoStructure.from_txt(partial_structure_txt)
-    legogpt = LegoGPT(LegoGPTConfig(LEGOGPT_PATH, max_bricks=1, max_regenerations=0))
-    lego, rejections = legogpt._generate_structure(
-        'An elongated, rectangular vessel with layered construction, central recess, and uniform edges.', partial_lego)
+    partial_bricks = BrickStructure.from_txt(partial_structure_txt)
+    brickgpt = BrickGPT(BrickGPTConfig(BRICKGPT_PATH, max_bricks=1, max_regenerations=0))
+    bricks, rejections = brickgpt._generate_structure(
+        'An elongated, rectangular vessel with layered construction, central recess, and uniform edges.', partial_bricks)
 
-    print(lego)
-    print('# of bricks:', len(lego))
+    print(bricks)
+    print('# of bricks:', len(bricks))
     print('Brick rejection reasons:', rejections)

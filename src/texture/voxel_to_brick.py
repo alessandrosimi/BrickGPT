@@ -5,20 +5,20 @@ import argparse
 import json
 
 
-def read_LEGO_Library():
-    # read ../lego_library.json
-    with open(Path(__file__).parent.parent / 'legogpt' / 'data' / 'lego_library.json', 'r') as file:
-        lego_lib = json.load(file)
-    return lego_lib
+def read_brick_library():
+    # read ../brick_library.json
+    with open(Path(__file__).parent.parent / 'brickgpt' / 'data' / 'brick_library.json', 'r') as file:
+        brick_lib = json.load(file)
+    return brick_lib
 
 def get_other3points(partID, x, y, z, ori):
     if partID == 13 or partID == 14 or partID == 0:
         return 0, 0, 0, 0, 0, 0
     
-    if str(partID) not in lego_lib:
+    if str(partID) not in brick_lib:
         return 0, 0, 0, 0, 0, 0
     
-    part = lego_lib[str(partID)]
+    part = brick_lib[str(partID)]
 
     if ori == 0:
         dx = part['height']
@@ -170,14 +170,14 @@ def get_nearest_lego_color(rgb_color):
             
     return nearest_code
 
-def get_brick_id_from_dimensions(height, width, lego_lib):
-    for k, v in lego_lib.items():
+def get_brick_id_from_dimensions(height, width, brick_lib):
+    for k, v in brick_lib.items():
         if (v['height'], v['width']) == (height, width) or (v['width'], v['height']) == (height, width):
             return int(k)
     # fallback: return the smallest brick
-    return int(min(lego_lib.keys(), key=lambda k: lego_lib[k]['height'] * lego_lib[k]['width']))
+    return int(min(brick_lib.keys(), key=lambda k: brick_lib[k]['height'] * brick_lib[k]['width']))
 
-def parse_output_string(output_str, lego_lib):
+def parse_output_string(output_str, brick_lib):
     """
     Parse the 'output' string from the new JSON format into a list of brick dicts.
     Each dict will have keys: x, y, z, ori, height, width, brick_id.
@@ -195,7 +195,7 @@ def parse_output_string(output_str, lego_lib):
         else:
             height, width = w_raw, h_raw
             ori = 1
-        brick_id = get_brick_id_from_dimensions(height, width, lego_lib)
+        brick_id = get_brick_id_from_dimensions(height, width, brick_lib)
         brick = {
             'x': x,
             'y': y,
@@ -212,18 +212,18 @@ def main():
     # Parse arguments
     parser = argparse.ArgumentParser()
     parser.add_argument('--ldr_file', type=str, help='Path to LDR file', default="colored_bricks.ldr")
-    parser.add_argument('--lego_file', type=str, help='Path to Lego structure file')
+    parser.add_argument('--input_file', type=str, help='Path to brick structure file')
     parser.add_argument('--colored_voxels', type=str, help='Path to colored voxels npy file', default="colored_voxels.npy")
     parser.add_argument('--use_base', action='store_true', help='Use base brick')
     args = parser.parse_args()
 
-    lego_lib = read_LEGO_Library()
+    brick_lib = read_brick_library()
 
-    if args.lego_file.endswith('.json'):
-        with open(args.lego_file, 'r') as f:
+    if args.input_file.endswith('.json'):
+        with open(args.input_file, 'r') as f:
             data = json.load(f)['output']
-    elif args.lego_file.endswith('.txt'):
-        with open(args.lego_file, 'r') as f:
+    elif args.input_file.endswith('.txt'):
+        with open(args.input_file, 'r') as f:
             data = f.read()
 
     if args.use_base:
@@ -237,10 +237,10 @@ def main():
     colored_voxels = np.load(args.colored_voxels)
 
     # Parse the new output string format
-    bricks = parse_output_string(data, lego_lib)
+    bricks = parse_output_string(data, brick_lib)
 
     for brick in bricks:
-        part = lego_lib[str(brick['brick_id'])]
+        part = brick_lib[str(brick['brick_id'])]
 
         partID = part['partID']
 

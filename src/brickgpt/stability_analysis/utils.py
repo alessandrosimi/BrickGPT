@@ -1,10 +1,10 @@
 import numpy as np
 
 
-def construct_world_grid(lego, world_dimension, brick_library):
+def construct_world_grid(bricks, world_dimension, brick_library):
     world_grid = np.zeros(world_dimension)
-    for key in lego.keys():
-        brick = lego[key]
+    for key in bricks.keys():
+        brick = bricks[key]
         brick_id = str(brick["brick_id"])
         if brick["ori"] == 0:
             h = brick_library[brick_id]["height"]

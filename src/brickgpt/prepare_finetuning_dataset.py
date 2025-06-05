@@ -10,22 +10,22 @@ from transformers import HfArgumentParser
 @dataclass
 class PrepareDatasetArguments:
     input_path: str = field(
-        default='AvaLovelace/StableText2Lego',
-        metadata={'help': 'Path to the directory containing the LEGO dataset to be processed. '
-                          'This dataset should contain at least the fields "captions" (list[string]) and "lego" (string).'},
+        default='AvaLovelace/StableText2Brick',
+        metadata={'help': 'Path to the directory containing the brick structure dataset to be processed. '
+                          'This dataset should contain at least the fields "captions" (list[string]) and "bricks" (string).'},
     )
     output_path: str = field(
         default='datasets',
         metadata={'help': 'Path to the directory in which to save the processed fine-tuning dataset. '
                           'The fine-tuning dataset will contain the field "messages", a conversational exchange where '
-                          'the user prompts the assistant with a "caption" and the assistant provides a "lego" '
+                          'the user prompts the assistant with a "caption" and the assistant provides a "bricks" '
                           'following that caption.'},
     )
 
 
 def main():
     """
-    This script converts a LEGO dataset into the conversational format required for fine-tuning with TRL SFT.
+    This script converts a brick structure dataset into the conversational format required for fine-tuning with TRL SFT.
     """
 
     parser = HfArgumentParser(PrepareDatasetArguments)
@@ -34,18 +34,18 @@ def main():
     input_dataset = load_dataset(cfg.input_path)
 
     def convert_sample(batch: MutableMapping) -> dict:
-        return {'messages': [create_messages(caption, lego)
-                             for lego, captions in zip(batch['lego'], batch['captions'])
+        return {'messages': [create_messages(caption, bricks)
+                             for bricks, captions in zip(batch['bricks'], batch['captions'])
                              for caption in captions]}
 
-    def create_messages(caption: str, lego: str) -> list[dict[str, str]]:
+    def create_messages(caption: str, bricks: str) -> list[dict[str, str]]:
         """
         Converts a sample from the input dataset into the conversational format required for fine-tuning.
         """
         messages = [
             {'role': 'system', 'content': 'You are a helpful assistant.'},
             {'role': 'user', 'content': caption},
-            {'role': 'assistant', 'content': lego},
+            {'role': 'assistant', 'content': bricks},
         ]
         return messages
 

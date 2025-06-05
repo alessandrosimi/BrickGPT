@@ -1,7 +1,7 @@
 [project]
-name = "legogpt"
+name = "brickgpt"
 version = "0.1.2"
-description = "Official repository for LegoGPT"
+description = "Official repository for BrickGPT"
 readme = "README.md"
 authors = [
     { name = "Ava Pun", email = "apun@andrew.cmu.edu" }
@@ -23,9 +23,9 @@ finetuning = [
 ]
 
 [project.scripts]
-infer = "legogpt.infer:main"
-prepare_finetuning_dataset = "legogpt.prepare_finetuning_dataset:main"
-render_lego = "legogpt.render_lego:main"
+infer = "brickgpt.infer:main"
+prepare_finetuning_dataset = "brickgpt.prepare_finetuning_dataset:main"
+render_bricks = "brickgpt.render_bricks:main"
 
 [build-system]
 requires = ["hatchling"]

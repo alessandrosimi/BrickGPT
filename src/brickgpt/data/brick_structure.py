@@ -4,16 +4,16 @@ from dataclasses import dataclass
 
 import numpy as np
 
-from legogpt.stability_analysis import stability_score, StabilityConfig, connectivity_score
-from .lego_library import (lego_library,
+from brickgpt.stability_analysis import stability_score, StabilityConfig, connectivity_score
+from .brick_library import (brick_library,
                            dimensions_to_brick_id, brick_id_to_dimensions,
                            brick_id_to_part_id, part_id_to_brick_id)
 
 
 @dataclass(frozen=True, order=True, kw_only=True)
-class LegoBrick:
+class Brick:
     """
-    Represents a 1-unit-tall rectangular LEGO brick.
+    Represents a 1-unit-tall rectangular brick.
     """
     h: int
     w: int
@@ -114,18 +114,18 @@ class LegoBrick:
                 raise ValueError(f"LDR format is ill-formatted: {brick_ldr}")
 
 
-class LegoStructure:
+class BrickStructure:
     """
-    Represents a LEGO structure in the form of a list of LEGO bricks.
+    Represents a brick structure in the form of a list of bricks.
     """
 
-    def __init__(self, bricks: list[LegoBrick], world_dim: int = 20):
+    def __init__(self, bricks: list[Brick], world_dim: int = 20):
         self.world_dim = world_dim
 
         # Check if structure starts at ground level
         z0 = min((brick.z for brick in bricks), default=0)
         if z0 != 0:
-            warnings.warn('LEGO structure does not start at ground level z=0.')
+            warnings.warn('Brick structure does not start at ground level z=0.')
 
         # Build structure from bricks
         self.bricks = []
@@ -140,7 +140,7 @@ class LegoStructure:
         return self.to_txt()
 
     def __eq__(self, other) -> bool:
-        if not isinstance(other, LegoStructure):
+        if not isinstance(other, BrickStructure):
             return NotImplemented
         return self.bricks == other.bricks
 
@@ -153,7 +153,7 @@ class LegoStructure:
     def to_ldr(self) -> str:
         return ''.join([brick.to_ldr() for brick in self.bricks])
 
-    def add_brick(self, brick: LegoBrick) -> None:
+    def add_brick(self, brick: Brick) -> None:
         self.bricks.append(brick)
         self.voxel_occupancy[brick.slice] += 1
 
@@ -165,20 +165,20 @@ class LegoStructure:
     def has_out_of_bounds_bricks(self) -> bool:
         return any(not self.brick_in_bounds(brick) for brick in self.bricks)
 
-    def brick_in_bounds(self, brick: LegoBrick) -> bool:
+    def brick_in_bounds(self, brick: Brick) -> bool:
         return (all(slice_.start >= 0 and slice_.stop <= self.world_dim for slice_ in brick.slice_2d)
                 and 0 <= brick.z < self.world_dim)
 
     def has_collisions(self) -> bool:
         return np.any(self.voxel_occupancy > 1)
 
-    def brick_collides(self, brick: LegoBrick) -> bool:
+    def brick_collides(self, brick: Brick) -> bool:
         return np.any(self.voxel_occupancy[brick.slice])
 
     def has_floating_bricks(self) -> bool:
         return any(self.brick_floats(brick) for brick in self.bricks)
 
-    def brick_floats(self, brick: LegoBrick) -> bool:
+    def brick_floats(self, brick: Brick) -> bool:
         if brick.z == 0:
             return False  # Supported by ground
         if np.any(self.voxel_occupancy[*brick.slice_2d, brick.z - 1]):
@@ -197,7 +197,7 @@ class LegoStructure:
             raise ValueError('Cannot compute stability scores - structure has colliding bricks.')
         if self.has_out_of_bounds_bricks():
             raise ValueError('Cannot compute stability scores - structure has out of bounds bricks.')
-        scores, _, _, _, _ = stability_score(self.to_json(), lego_library,
+        scores, _, _, _, _ = stability_score(self.to_json(), brick_library,
                                              StabilityConfig(world_dimension=(self.world_dim,) * 3))
         return scores
 
@@ -215,20 +215,20 @@ class LegoStructure:
         return scores
 
     @classmethod
-    def from_json(cls, lego_json: dict):
-        bricks = [LegoBrick.from_json(v) for k, v in lego_json.items() if k.isdigit()]
+    def from_json(cls, bricks_json: dict):
+        bricks = [Brick.from_json(v) for k, v in bricks_json.items() if k.isdigit()]
         return cls(bricks)
 
     @classmethod
-    def from_txt(cls, lego_txt: str):
-        bricks_txt = lego_txt.split('\n')
+    def from_txt(cls, bricks_txt: str):
+        bricks_txt = bricks_txt.split('\n')
         bricks_txt = [b for b in bricks_txt if b.strip()]  # Remove blank lines
-        bricks = [LegoBrick.from_txt(brick) for brick in bricks_txt]
+        bricks = [Brick.from_txt(brick) for brick in bricks_txt]
         return cls(bricks)
 
     @classmethod
-    def from_ldr(cls, lego_ldr: str):
-        bricks_ldr = lego_ldr.split('0 STEP')  # Split on step lines
+    def from_ldr(cls, bricks_ldr: str):
+        bricks_ldr = bricks_ldr.split('0 STEP')  # Split on step lines
         bricks_ldr = [b for b in bricks_ldr if b.strip()]  # Remove blank or whitespace-only lines
-        bricks = [LegoBrick.from_ldr(brick) for brick in bricks_ldr]
+        bricks = [Brick.from_ldr(brick) for brick in bricks_ldr]
         return cls(bricks)

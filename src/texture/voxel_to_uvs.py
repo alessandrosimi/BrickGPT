@@ -108,7 +108,7 @@ def voxel_grid_to_mesh_with_uvs(voxel_grid):
     return mesh, voxel_to_uv_mapping
 
 
-def load_lego(fname):
+def load_bricks(fname):
     if fname.endswith('.json'):
         f = open(fname)
         content = json.load(f)
@@ -197,9 +197,9 @@ if __name__ == "__main__":
     args = parser.parse_args()
 
     fname = args.fname
-    lego_json = load_lego(fname)
+    bricks_json = load_bricks(fname)
     dimension = [20, 20, 20]
-    voxel_grid = json2vox(lego_json, dim=dimension)
+    voxel_grid = json2vox(bricks_json, dim=dimension)
 
     voxel_grid = np.swapaxes(voxel_grid, 2, 1)
     voxel_grid = voxel_grid[::-1, :, ::-1]

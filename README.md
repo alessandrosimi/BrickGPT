@@ -1,9 +1,9 @@
-# LegoGPT
+# BrickGPT
 
 <div>
-<a href="https://avalovelace1.github.io/LegoGPT/"><img src="https://img.shields.io/badge/Project_Page-Website-green?logo=googlechrome&logoColor=white" alt="Project Page" height=22px></a>
+<a href="https://avalovelace1.github.io/BrickGPT/"><img src="https://img.shields.io/badge/Project_Page-Website-green?logo=googlechrome&logoColor=white" alt="Project Page" height=22px></a>
 <a href="https://arxiv.org/abs/2505.05469" target="_blank"><img src=https://img.shields.io/badge/ArXiv-Paper-b5212f.svg?logo=arxiv alt="ArXiv" height=22px></a>
-<a href="https://huggingface.co/spaces/cmu-gil/LegoGPT-Demo" target="_blank"><img src=https://img.shields.io/badge/%F0%9F%A4%97%20HuggingFace-Demo-blue.svg alt="HuggingFace" height=22px></a>
+<a href="https://huggingface.co/spaces/cmu-gil/BrickGPT-Demo" target="_blank"><img src=https://img.shields.io/badge/%F0%9F%A4%97%20HuggingFace-Demo-blue.svg alt="HuggingFace" height=22px></a>
 </div>
 
 ***Generating Physically Stable and Buildable LEGO® Designs from Text***  
@@ -18,26 +18,26 @@ arXiv 2025
 
 ---
 
-This is the official repository for **LegoGPT**, the first approach for generating physically stable LEGO
+This is the official repository for **BrickGPT**, the first approach for generating physically stable toy
 brick models from text prompts.
 
 <video src='https://github.com/user-attachments/assets/cec2cb09-f1de-443f-9c1b-0f17896336a7' width=480/></video>
 
 ## Results
 
-Examples of generated LEGO structures assembled by humans:
+Examples of generated brick structures assembled by humans:
 
-<img src="assets/human_exec.jpg" alt="Examples of generated LEGO models assembled by humans"/>
+<img src="assets/human_exec.jpg" alt="Examples of generated brick models assembled by humans"/>
 
-Examples of textured and colored LEGO models:
+Examples of textured and colored brick models:
 
-<img src="assets/texture.jpg" alt="Examples of LEGO models generated with textures and colors"/>
+<img src="assets/texture.jpg" alt="Examples of brick models generated with textures and colors"/>
 
 ## Installation
 
 ### Prerequisites
 
-- **Llama-3.2-1B-Instruct:** LegoGPT is fine-tuned from meta-llama/Llama-3.2-1B-Instruct, a gated model. Request access
+- **Llama-3.2-1B-Instruct:** BrickGPT is fine-tuned from meta-llama/Llama-3.2-1B-Instruct, a gated model. Request access
   to the model [here](https://huggingface.co/meta-llama/Llama-3.2-1B-Instruct), then generate
   a [Hugging Face user access token](https://huggingface.co/docs/hub/en/security-tokens) and set it as an environment
   variable: `export HF_TOKEN=<your_token>`. The model will be automatically downloaded upon running the code.
@@ -54,9 +54,9 @@ Examples of textured and colored LEGO models:
 This repo uses the Python project manager [uv](https://docs.astral.sh/uv/). To install this repo as a standalone
 project, first install all prerequisites. Then,
 
-1. Clone the repo: `git clone "https://github.com/AvaLovelace1/LegoGPT.git" && cd LegoGPT`.
+1. Clone the repo: `git clone "https://github.com/AvaLovelace1/BrickGPT.git" && cd BrickGPT`.
 2. *(Optional, required for running the `infer` script and texturing)* Follow these instructions to install ImportLDraw,
-   required for rendering LEGO visualizations:
+   required for rendering brick structure visualizations:
     - Install the ImportLDraw submodule with `git submodule update --init`.
     - Download
       this [background exr file](https://drive.google.com/file/d/1Yux0sEqWVpXGMT9Z5J094ISfvxhH-_5K/view?usp=share_link)
@@ -74,20 +74,20 @@ project, first install all prerequisites. Then,
 To install this repo as a package in your own Python project, first install all prerequisites. Then, run
 
 ```zsh
-uv add "https://github.com/AvaLovelace1/LegoGPT.git"
+uv add "https://github.com/AvaLovelace1/BrickGPT.git"
 ```
 
 if using uv, or
 
 ```zsh
-pip install "https://github.com/AvaLovelace1/LegoGPT.git"
+pip install "https://github.com/AvaLovelace1/BrickGPT.git"
 ```
 
 if using pip.
 
 ## Running inference interactively
 
-You can run inference with the fine-tuned LegoGPT model using:
+You can run inference with the fine-tuned BrickGPT model using:
 
 ```zsh
 uv run infer
@@ -95,7 +95,7 @@ uv run infer
 
 This script starts an interactive session where you can input a prompt and get a response from the model.
 The model weights will automatically be downloaded from Hugging Face. They can be
-found [here](https://huggingface.co/AvaLovelace/LegoGPT).
+found [here](https://huggingface.co/AvaLovelace/BrickGPT).
 
 If you wish to run inference with a different set of model weights, specify them using the `--model_name_or_path`
 option. See `uv run infer -h` for a full list of options.
@@ -118,19 +118,19 @@ Total # bricks: 59
 Total # brick rejections: 98
 Brick rejection reasons: {'collision': 5, 'already_rejected': 93}
 Total # regenerations: 4
-Saved results to /home/apun/LegoGPT/output.txt, /home/apun/LegoGPT/output.ldr, and /home/apun/LegoGPT/output.png
+Saved results to /home/apun/BrickGPT/output.txt, /home/apun/BrickGPT/output.ldr, and /home/apun/BrickGPT/output.png
 --------------------
 Enter another prompt, or <Return> to exit:
 ```
 
 Three output files are created: `output.png`, `output.txt`, and `output.ldr`.
 
-`output.png` contains a rendered image of the generated LEGO structure:
+`output.png` contains a rendered image of the generated brick structure:
 
-<img src="assets/output_img.png" alt="Rendered LEGO output image" width="256"/>
+<img src="assets/output_img.png" alt="Rendered brick structure output image" width="256"/>
 
-`output.txt` contains the LEGO structure in brick-by-brick text format, where each line of the form `hxw (x,y,z)`
-represents a LEGO brick of height `h` and width `w` at position `(x,y,z)`:
+`output.txt` contains the brick structure in brick-by-brick text format, where each line of the form `hxw (x,y,z)`
+represents a brick of height `h` and width `w` at position `(x,y,z)`:
 
 ```text
 1x2 (16,18,0)
@@ -141,32 +141,32 @@ represents a LEGO brick of height `h` and width `w` at position `(x,y,z)`:
 [...]
 ```
 
-And finally, `output.ldr` contains the LEGO structure in LDraw format, which can be opened with any LDraw-compatible
+And finally, `output.ldr` contains the brick structure in LDraw format, which can be opened with any LDraw-compatible
 software.
 
 ## Running texturing
 
-The subdirectory `src/texture` contains the code for generating the UV texture or per-brick color given a LEGO design.
+The subdirectory `src/texture` contains the code for generating the UV texture or per-brick color given a brick design.
 To run texturing, `cd` into `src/texture` and follow the instructions in the `README.md` file [there](src/texture).
 
 ## Running fine-tuning
 
-LegoGPT was created by
+BrickGPT was created by
 fine-tuning [Llama-3.2-1B-Instruct](https://huggingface.co/meta-llama/Llama-3.2-1B-Instruct)
-on the custom LEGO dataset [StableText2Lego](https://huggingface.co/datasets/AvaLovelace/StableText2Lego), converted
+on the custom brick structure dataset [StableText2Brick](https://huggingface.co/datasets/AvaLovelace/StableText2Brick), converted
 into instructional format. We used Hugging Face [TRL](https://huggingface.co/docs/trl/index)
 with [Accelerate](https://huggingface.co/docs/accelerate/index) for fine-tuning.
 
 To replicate the fine-tuning process, first install additional Python dependencies with `uv sync --extra finetuning`.
 Then, follow these instructions:
 
-1. Prepare the LEGO dataset for fine-tuning with
-   `uv run prepare_finetuning_dataset --input_path AvaLovelace/StableText2Lego --output_path [FINETUNING_DATASET_PATH]`.
+1. Prepare the brick structure dataset for fine-tuning with
+   `uv run prepare_finetuning_dataset --input_path AvaLovelace/StableText2Brick --output_path [FINETUNING_DATASET_PATH]`.
    This converts the dataset into the instructional format required for fine-tuning LLaMA.
-    - If you wish to run fine-tuning with your own LEGO dataset, replace `AvaLovelace/StableText2Lego` with the path to
-      your dataset. This dataset should have the fields "captions" and "lego". The "lego" field should contain a LEGO
+    - If you wish to run fine-tuning with your own brick structure dataset, replace `AvaLovelace/StableText2Brick` with the path to
+      your dataset. This dataset should have the fields "captions" and "bricks". The "bricks" field should contain a brick
       structure in the text format described in the paper, and the "captions" field should contain a list of one or more
-      descriptions of the LEGO structure.
+      descriptions of the brick structure.
 2. Download the pretrained [Llama-3.2-1B-Instruct model](https://huggingface.co/meta-llama/Llama-3.2-1B-Instruct) to
    some directory `[PRETRAINED_DIR]`.
    **IMPORTANT:** Replace the `config.json`, `special_tokens_map.json`, and `tokenizer_config.json` files with the ones
@@ -180,13 +180,13 @@ Then, follow these instructions:
 
 ## License
 
-The LegoGPT model, StableText2Lego dataset, and majority of the LegoGPT code are licensed under
-the [MIT License](https://github.com/AvaLovelace1/LegoGPT/blob/main/LICENSE). The following submodules may have
+The BrickGPT model, StableText2Brick dataset, and majority of the BrickGPT code are licensed under
+the [MIT License](https://github.com/AvaLovelace1/BrickGPT/blob/main/LICENSE). The following submodules may have
 different licenses:
 
-- **[ImportLDraw](https://github.com/TobyLobster/ImportLDraw)**: For visualizing LEGO structures, we used ImportLDraw,
+- **[ImportLDraw](https://github.com/TobyLobster/ImportLDraw)**: For visualizing brick structures, we used ImportLDraw,
   available under the [LICENSE](https://github.com/TobyLobster/ImportLDraw/blob/master/LICENSE).
-- **[FlashTex](https://github.com/Roblox/FlashTex)**: For LEGO texturing and coloring, we used FlashTex, available under
+- **[FlashTex](https://github.com/Roblox/FlashTex)**: For texturing and coloring, we used FlashTex, available under
   the [LICENSE](https://github.com/Roblox/FlashTex/blob/main/LICENSE).
 
 ## Citation
@@ -194,7 +194,7 @@ different licenses:
 If you find this repository useful for your research, please cite the following work.
 
 ```bibtex
-@article{pun2025legogpt,
+@article{pun2025brickgpt,
     title   = {Generating Physically Stable and Buildable LEGO Designs from Text},
     author  = {Pun, Ava and Deng, Kangle and Liu, Ruixuan and Ramanan, Deva and Liu, Changliu and Zhu, Jun-Yan},
     journal = {arXiv preprint arXiv:2505.05469},

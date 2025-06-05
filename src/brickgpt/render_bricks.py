@@ -15,7 +15,7 @@ import ImportLDraw
 from ImportLDraw.loadldraw.loadldraw import Options, Configure, loadFromFile, FileSystem
 
 
-def render_lego(
+def render_bricks(
         in_file: str,
         out_file: str,
         reposition_camera: bool = True,
@@ -134,7 +134,7 @@ def main():
     args = parser.parse_args()
 
     # Get the absolute path of the input file
-    render_lego(args.in_file, args.out_file, square_image=True, instructions_look=False)
+    render_bricks(args.in_file, args.out_file, square_image=True, instructions_look=False)
     print(f'Rendered image to {args.out_file}')
 
 

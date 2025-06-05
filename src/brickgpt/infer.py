@@ -4,15 +4,15 @@ import time
 import transformers
 from transformers import HfArgumentParser
 
-from legogpt.models import LegoGPT, LegoGPTConfig
-from legogpt.render_lego import render_lego
+from brickgpt.models import BrickGPT, BrickGPTConfig
+from brickgpt.render_bricks import render_bricks
 
 
 def main():
-    parser = HfArgumentParser(LegoGPTConfig)
+    parser = HfArgumentParser(BrickGPTConfig)
     (cfg,) = parser.parse_args_into_dataclasses()
 
-    legogpt = LegoGPT(cfg)
+    brickgpt = BrickGPT(cfg)
     prompt = input('Enter a prompt, or <Return> to exit: ')
 
     while True:
@@ -33,23 +33,23 @@ def main():
         seed = int(seed) if seed else 42
         transformers.set_seed(seed)
 
-        # Generate LEGO
+        # Generate bricks
         print('Generating...')
         start_time = time.time()
-        output = legogpt(prompt)
+        output = brickgpt(prompt)
         end_time = time.time()
 
         # Save results
         with open(txt_filename, 'w') as f:
-            f.write(output['lego'].to_txt())
+            f.write(output['bricks'].to_txt())
         with open(ldr_filename, 'w') as f:
-            f.write(output['lego'].to_ldr())
-        render_lego(ldr_filename, img_filename)
+            f.write(output['bricks'].to_ldr())
+        render_bricks(ldr_filename, img_filename)
 
         # Print results
         print('--------------------')
         print(f'Finished generating in {end_time - start_time:.2f}s.')
-        print('Total # bricks:', len(output['lego']))
+        print('Total # bricks:', len(output['bricks']))
         print('Total # brick rejections:', output['rejection_reasons'].total())
         print('Brick rejection reasons:', dict(output['rejection_reasons']))
         print('Total # regenerations:', output['n_regenerations'])

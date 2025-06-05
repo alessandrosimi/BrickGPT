@@ -46,7 +46,7 @@ isBlender28OrLater = hasattr(bpy.app, "version") and bpy.app.version >= (2, 80)
 hasCollections = hasattr(bpy.data, "collections")
 
 
-def render_lego(
+def render_bricks(
         in_file,
         output_dir,
         idx=0,
@@ -431,7 +431,7 @@ if __name__ == "__main__":
     out_file = os.path.abspath(args.out_file)
     out_dir = os.path.dirname(out_file)
     os.makedirs(os.path.join(out_dir), exist_ok=True)
-    render_lego(
+    render_bricks(
         in_file, out_file, square_image=True, instructionsLook=args.instructions_look, export=True, fov=args.fov
     )
     print(f"Rendered image to {out_file}")

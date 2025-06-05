@@ -1,6 +1,6 @@
-# Textured and Colored LEGO Model Generation
+# Textured and Colored Brick Model Generation
 
-This subdirectory contains the code for generating the UV texture or per-brick color given a LEGO design.
+This subdirectory contains the code for generating the UV texture or per-brick color given a toy brick structure.
 
 ## Getting Started
 
@@ -16,9 +16,9 @@ In addition to the dependencies required by the main repo, this project requires
 
 ---
 
-### Textured LEGO Model Generation
+### Textured Brick Model Generation
 
-Given a LEGO LDR or txt file and a text prompt as input, generate the UV texture for it.
+Given a brick structure LDR or txt file and a text prompt as input, generate the UV texture for it.
 
 ```zsh
 INPUT="./examples/chair.ldr"     # Input LDR file
@@ -34,9 +34,9 @@ can check the rendered image `./out/chair/texture_render/output_mesh_full_color.
 
 <img src="./examples/chair.png" alt="Rendered texture" width="256"/>
 
-### Colored LEGO Model Generation
+### Colored Brick Model Generation
 
-Given a LEGO LDR or txt file and a text prompt as input, colorize each brick.
+Given a brick structure LDR or txt file and a text prompt as input, colorize each brick.
 
 ```zsh
 INPUT="./examples/guitar.ldr"     # Input Text file
@@ -46,7 +46,7 @@ TXT_PROMPT="Parlor guitar with ladder bracing, folk revival design, best quality
 uv run scripts/generate_color.py "${INPUT}" "${OUTPUT}" "${TXT_PROMPT}"
 ```
 
-The generated colored LEGO model will be saved to `./out/guitar/colored_brick.ldr`. Check the rendered image
+The generated colored brick model will be saved to `./out/guitar/colored_brick.ldr`. Check the rendered image
 `./out/guitar/rendered_color.png`.
 
 <img src="./examples/guitar.png" alt="Rendered texture" width="256"/>

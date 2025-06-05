@@ -571,7 +571,7 @@ wheels = [
 ]
 
 [[package]]
-name = "legogpt"
+name = "brickgpt"
 version = "0.1.2"
 source = { editable = "." }
 dependencies = [

@@ -20,9 +20,9 @@ class StabilityConfig:
     beta: float = 0.000001
 
 
-def stability_score(lego_structure, lego_library, cfg=StabilityConfig()):
+def stability_score(brick_structure, brick_library, cfg=StabilityConfig()):
     ############### Setup ###############
-    brick_library = lego_library
+    brick_library = brick_library
     g_ = cfg.g  # N/kg
     T_ = cfg.T / 1000 * g_  # N
     brick_unit_height = cfg.brick_unit_height  # mm
@@ -32,12 +32,12 @@ def stability_score(lego_structure, lego_library, cfg=StabilityConfig()):
     alpha = cfg.alpha
     beta = cfg.beta
 
-    world_grid = construct_world_grid(lego_structure, world_dim, brick_library)
-    n_bricks = len(lego_structure)
+    world_grid = construct_world_grid(brick_structure, world_dim, brick_library)
+    n_bricks = len(brick_structure)
     t_start = time.time()
 
     ############### Setup Optimization ###############
-    model = gp.Model("lego_stability_analysis")
+    model = gp.Model("stability_analysis")
     model.setParam("OutputFlag", print_log)
     model.Params.IterationLimit = 1000000
     model.setParam("MIPFocus", 1)
@@ -68,8 +68,8 @@ def stability_score(lego_structure, lego_library, cfg=StabilityConfig()):
 
     force_dict = dict()
     sum_f_list = []
-    for key in lego_structure.keys():
-        brick = lego_structure[key]
+    for key in brick_structure.keys():
+        brick = brick_structure[key]
         brick_id = str(brick["brick_id"])
         if brick_id == "0" or brick_id == "1" or brick_id == "13":
             continue
@@ -116,8 +116,8 @@ def stability_score(lego_structure, lego_library, cfg=StabilityConfig()):
     # for i in range(world_dim[0]):
     #     for j in range(world_dim[1]):
     #         for k in range(world_dim[2]):
-    for key in lego_structure.keys():
-        brick = lego_structure[key]
+    for key in brick_structure.keys():
+        brick = brick_structure[key]
         brick_id = str(brick["brick_id"])
         if brick_id == "0" or brick_id == "1" or brick_id == "13":
             continue
@@ -192,8 +192,8 @@ def stability_score(lego_structure, lego_library, cfg=StabilityConfig()):
                                                                       name=force_key + "_n_up")
 
     # Setup Constraints
-    for key in lego_structure.keys():
-        brick = lego_structure[key]
+    for key in brick_structure.keys():
+        brick = brick_structure[key]
         brick_id = str(brick["brick_id"])
         if brick_id == "0" or brick_id == "1" or brick_id == "13":
             continue
@@ -474,8 +474,8 @@ def stability_score(lego_structure, lego_library, cfg=StabilityConfig()):
         return np.ones(world_dim), model.NumVars, model.NumConstrs, total_t, solve_t
 
     heatmap_color = np.zeros((world_dim[0], world_dim[1], world_dim[2], 3))
-    for key in lego_structure.keys():
-        brick = lego_structure[key]
+    for key in brick_structure.keys():
+        brick = brick_structure[key]
         brick_id = str(brick["brick_id"])
         if brick_id == "0" or brick_id == "1" or brick_id == "13":
             continue
@@ -514,7 +514,7 @@ def stability_score(lego_structure, lego_library, cfg=StabilityConfig()):
     if print_log:
         print("Obj Val:", model.objVal)
         print("Eq obj Val:", eq_obj.X)
-        print("Num lego bricks: ", n_bricks)
+        print("Num bricks: ", n_bricks)
         print("Total solve time: ", total_t, " Optimization Solve Time: ", solve_t)
 
     num_vars = model.NumVars

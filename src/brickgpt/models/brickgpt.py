@@ -11,26 +11,26 @@ import numpy as np
 import torch
 from transformers.generation.logits_process import PrefixConstrainedLogitsProcessor, LogitsProcessorList
 
-from legogpt.data import max_brick_dimension, LegoStructure, LegoBrick
+from brickgpt.data import max_brick_dimension, BrickStructure, Brick
 from .llm import LLM
 
 
 @dataclass
-class LegoGPTConfig:
+class BrickGPTConfig:
     model_name_or_path: str = field(
-        default='AvaLovelace/LegoGPT',
+        default='AvaLovelace/BrickGPT',
         metadata={'help': 'Model checkpoint for weights initialization.'},
     )
     world_dim: int = field(
         default=20,
         kw_only=True,
-        metadata={'help': 'The dimension of the box in which the generated LEGO should fit. '
+        metadata={'help': 'The dimension of the box in which the generated brick structure should fit. '
                           'Bricks outside this box are considered out of bounds.'},
     )
     max_bricks: int = field(
         default=2000,
         kw_only=True,
-        metadata={'help': 'The maximum number of bricks per generated LEGO structure.'},
+        metadata={'help': 'The maximum number of bricks per generated brick structure.'},
     )
     max_brick_rejections: int = field(
         default=500,
@@ -42,13 +42,13 @@ class LegoGPTConfig:
         default=True,
         kw_only=True,
         metadata={'help': 'Whether to use logit masking during inference '
-                          'to enforce compliance with the LEGO brick syntax. '
-                          'If False, the LEGO brick will be checked for validity after generation.'},
+                          'to enforce compliance with the brick syntax. '
+                          'If False, the brick will be checked for validity after generation.'},
     )
     max_regenerations: int = field(
         default=100,
         kw_only=True,
-        metadata={'help': 'The maximum number of times to roll back and regenerate the LEGO structure '
+        metadata={'help': 'The maximum number of times to roll back and regenerate the brick structure '
                           'if it is physically unstable. '
                           'Set to 0 if you want to disable physics-informed rollback.'},
     )
@@ -87,10 +87,10 @@ class LegoGPTConfig:
         metadata={'help': 'The cumulative probability threshold for nucleus sampling. '
                           'Has no effect if use_logit_masking=True.'},
     )
-    instruction_format: Literal['legogpt', 'few_shot', 'zero_shot'] = field(
-        default='legogpt',
+    instruction_format: Literal['brickgpt', 'few_shot', 'zero_shot'] = field(
+        default='brickgpt',
         kw_only=True,
-        metadata={'help': 'The format of the LEGO-generating instruction to give to the LLM.'},
+        metadata={'help': 'The format of the brick-structure-generating instruction to give to the LLM.'},
     )
     device: Literal['auto', 'cuda', 'mps', 'cpu'] = field(
         default='auto',
@@ -107,8 +107,8 @@ def get_device() -> str:
         return 'cuda' if torch.cuda.is_available() else 'cpu'
 
 
-class LegoGPT:
-    def __init__(self, cfg: LegoGPTConfig):
+class BrickGPT:
+    def __init__(self, cfg: BrickGPTConfig):
         self.world_dim = cfg.world_dim
         self.max_bricks = cfg.max_bricks
         self.max_brick_rejections = cfg.max_brick_rejections
@@ -123,7 +123,7 @@ class LegoGPT:
         self.device = get_device() if cfg.device == 'auto' else cfg.device
 
         instruction_fns = {
-            'legogpt': create_instruction,
+            'brickgpt': create_instruction,
             'few_shot': create_instruction_few_shot,
             'zero_shot': create_instruction_zero_shot,
         }
@@ -132,24 +132,24 @@ class LegoGPT:
         self.llm = LLM(cfg.model_name_or_path, self.device)
 
     def __call__(self, caption: str) -> dict:
-        lego = None
-        starting_lego = LegoStructure([])
+        bricks = None
+        starting_bricks = BrickStructure([])
         rejection_reasons = Counter()
         regeneration_num = None
 
-        # Generate LEGO structure. If it is unstable, remove all bricks after the first unstable brick and regenerate.
+        # Generate brick structure. If it is unstable, remove all bricks after the first unstable brick and regenerate.
         for regeneration_num in range(self.max_regenerations + 1):
-            lego, rejection_reasons_lego = self._generate_structure(caption, starting_lego=starting_lego)
-            rejection_reasons.update(rejection_reasons_lego)
-            if self.max_regenerations == 0 or self._is_stable(lego):
+            bricks, this_rejection_reasons = self._generate_structure(caption, starting_bricks=starting_bricks)
+            rejection_reasons.update(this_rejection_reasons)
+            if self.max_regenerations == 0 or self._is_stable(bricks):
                 break
             if regeneration_num == self.max_regenerations:
                 warnings.warn(f'Failed to generate a stable structure after {regeneration_num + 1} attempts.\n')
                 break
-            starting_lego = self._remove_all_bricks_after_first_unstable_brick(lego)
+            starting_bricks = self._remove_all_bricks_after_first_unstable_brick(bricks)
 
         return {
-            'lego': lego,
+            'bricks': bricks,
             'rejection_reasons': rejection_reasons,
             'n_regenerations': regeneration_num,
         }
@@ -157,24 +157,24 @@ class LegoGPT:
     def _generate_structure(
             self,
             caption: str,
-            starting_lego: LegoStructure = LegoStructure([]),
-    ) -> (LegoStructure, Counter):
+            starting_bricks: BrickStructure = BrickStructure([]),
+    ) -> (BrickStructure, Counter):
         """
-        Generates a LEGO structure based on the given caption, starting with a partial LEGO structure.
-        :param caption: A caption for the LEGO structure to be generated.
-        :param starting_lego: A partial LEGO structure to which the generated bricks will be added.
-        :return: A tuple containing the generated LEGO structure and a brick rejection reasons.
+        Generates a brick structure based on the given caption, starting with a partial brick structure.
+        :param caption: A caption for the brick structure to be generated.
+        :param starting_bricks: A partial brick structure to which the generated bricks will be added.
+        :return: A tuple containing the generated brick structure and a brick rejection reasons.
         """
-        starting_lego = copy.deepcopy(starting_lego)
+        starting_bricks = copy.deepcopy(starting_bricks)
 
         # Construct prompt
-        starting_lego_txt = starting_lego.to_txt()
+        starting_bricks_txt = starting_bricks.to_txt()
         messages = [
             {'role': 'system', 'content': 'You are a helpful assistant.'},
             {'role': 'user', 'content': self.instruction_fn(caption)},
         ]
-        if starting_lego_txt:  # Continue generation from a partial structure
-            messages.append({'role': 'assistant', 'content': starting_lego_txt})
+        if starting_bricks_txt:  # Continue generation from a partial structure
+            messages.append({'role': 'assistant', 'content': starting_bricks_txt})
             prompt = self.llm.tokenizer.apply_chat_template(messages, continue_final_message=True, return_tensors='pt')
         else:
             prompt = self.llm.tokenizer.apply_chat_template(messages, add_generation_prompt=True, return_tensors='pt')
@@ -183,22 +183,22 @@ class LegoGPT:
         rejection_reasons = Counter()
         for brick_num in range(self.max_bricks):
             brick, rejection_reasons_brick = self.generate_brick_with_rejection_sampling(
-                prompt if brick_num == 0 else None, lego=starting_lego
+                prompt if brick_num == 0 else None, bricks=starting_bricks
             )
             if not brick:  # EOS token was generated
                 break
             rejection_reasons.update(rejection_reasons_brick)
-            starting_lego.add_brick(LegoBrick.from_txt(brick))
+            starting_bricks.add_brick(Brick.from_txt(brick))
 
-        return starting_lego, rejection_reasons
+        return starting_bricks, rejection_reasons
 
     def generate_brick_with_rejection_sampling(
             self,
             prompt: str | None = None,
-            lego: LegoStructure = LegoStructure([]),
+            bricks: BrickStructure = BrickStructure([]),
     ) -> (str, Counter):
         """
-        Generates a LEGO brick to add to the LEGO structure, using rejection sampling to ensure the brick is valid.
+        Generates a brick to add to the brick structure, using rejection sampling to ensure the brick is valid.
         """
         rejection_reasons = Counter()
         rejected_bricks = set()
@@ -214,14 +214,14 @@ class LegoGPT:
                 break
 
             # Check if the generated brick is valid
-            add_brick_result = self._try_adding_brick(brick, lego, rejected_bricks)
+            add_brick_result = self._try_adding_brick(brick, bricks, rejected_bricks)
             if add_brick_result == 'success':
                 break
             if generation_num == self.max_brick_rejections:
                 warnings.warn(f'Failed to generate a valid brick after {generation_num + 1} attempts.\n'
                               f'Last generated brick: {brick}\n'
                               f'Reasons for rejection: {rejection_reasons}\n'
-                              f'Lego structure: {lego.to_txt()}\n')
+                              f'Brick structure: {bricks.to_txt()}\n')
                 break
 
             # Reset if brick is invalid
@@ -235,16 +235,16 @@ class LegoGPT:
         return brick, rejection_reasons
 
     @staticmethod
-    def _try_adding_brick(brick_str: str, lego: LegoStructure, rejected_bricks: set[str]) -> str:
+    def _try_adding_brick(brick_str: str, bricks: BrickStructure, rejected_bricks: set[str]) -> str:
         """
-        Tries to add the brick, represented by a string, to the given LEGO structure.
+        Tries to add the brick, represented by a string, to the given brick structure.
         Returns the result: 'success' if the add was successful, and the failure reason otherwise.
         """
         if brick_str in rejected_bricks:
             return 'already_rejected'
 
         try:
-            brick = LegoBrick.from_txt(brick_str)
+            brick = Brick.from_txt(brick_str)
         except ValueError:  # Brick is badly formatted
             return 'ill_formatted'
         try:
@@ -252,9 +252,9 @@ class LegoGPT:
         except ValueError:  # Brick ID is not in library
             return 'not_in_library'
 
-        if not lego.brick_in_bounds(brick):
+        if not bricks.brick_in_bounds(brick):
             return 'out_of_bounds'
-        if lego.brick_collides(brick):
+        if bricks.brick_collides(brick):
             return 'collision'
         return 'success'
 
@@ -272,9 +272,9 @@ class LegoGPT:
             temperature: float | None = None,
     ) -> str:
         """
-        Generates a LEGO brick in txt format without logit masking.
+        Generates a brick in txt format without logit masking.
         :param prompt: The prompt to be given to the LLM preceding brick generation.
-        :return: A LEGO brick in txt format, or the empty string if generation is finished.
+        :return: A brick in txt format, or the empty string if generation is finished.
         """
         if temperature is None:
             temperature = self.temperature
@@ -295,10 +295,10 @@ class LegoGPT:
             temperature: float | None = None,
     ) -> str:
         """
-        Generates a LEGO brick in txt format, using logit masking to enforce compliance with the LEGO brick syntax.
+        Generates a brick in txt format, using logit masking to enforce compliance with the brick syntax.
         WARNING: Assumes each number in the brick dimensions and positions is represented by 1 token.
         :param prompt: The prompt to be given to the LLM preceding brick generation.
-        :return: A LEGO brick in txt format, or the empty string if generation is finished.
+        :return: A brick in txt format, or the empty string if generation is finished.
         """
         if temperature is None:
             temperature = self.temperature
@@ -354,23 +354,23 @@ class LegoGPT:
 
         return allowed_token_ids_fn
 
-    def _is_stable(self, lego: LegoStructure) -> bool:
-        return lego.is_stable() if self.use_gurobi else lego.is_connected()
+    def _is_stable(self, bricks: BrickStructure) -> bool:
+        return bricks.is_stable() if self.use_gurobi else bricks.is_connected()
 
-    def _stability_scores(self, lego: LegoStructure) -> np.ndarray:
-        return lego.stability_scores() if self.use_gurobi else lego.connectivity_scores()
+    def _stability_scores(self, bricks: BrickStructure) -> np.ndarray:
+        return bricks.stability_scores() if self.use_gurobi else bricks.connectivity_scores()
 
-    def _remove_all_bricks_after_first_unstable_brick(self, lego: LegoStructure) -> LegoStructure:
+    def _remove_all_bricks_after_first_unstable_brick(self, bricks: BrickStructure) -> BrickStructure:
         """
-        Removes all bricks starting from the first unstable brick. Repeats this process until the lego is stable.
+        Removes all bricks starting from the first unstable brick. Repeats this process until the strucure is stable.
         """
         while True:
-            if self._is_stable(lego):
-                return lego
-            scores = self._stability_scores(lego)
-            first_unstable_brick_idx = next((i for i, brick in enumerate(lego.bricks)
+            if self._is_stable(bricks):
+                return bricks
+            scores = self._stability_scores(bricks)
+            first_unstable_brick_idx = next((i for i, brick in enumerate(bricks.bricks)
                                              if np.any(scores[brick.slice] >= 1)), -1)
-            lego = LegoStructure(lego.bricks[:first_unstable_brick_idx])
+            bricks = BrickStructure(bricks.bricks[:first_unstable_brick_idx])
 
 
 def create_instruction(caption: str) -> str:
@@ -411,4 +411,4 @@ def create_instruction_few_shot(caption: str) -> str:
 
 
 def _create_example_instruction(x: dict) -> str:
-    return f'### Input:\n{x["caption"]}\n\n### Output:\n{x["lego"]}'
+    return f'### Input:\n{x["caption"]}\n\n### Output:\n{x["bricks"]}'
