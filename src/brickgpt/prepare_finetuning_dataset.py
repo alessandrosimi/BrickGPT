@@ -6,6 +6,8 @@ from pathlib import Path
 from datasets import load_dataset
 from transformers import HfArgumentParser
 
+from brickgpt.models import create_instruction
+
 
 @dataclass
 class PrepareDatasetArguments:
@@ -44,7 +46,7 @@ def main():
         """
         messages = [
             {'role': 'system', 'content': 'You are a helpful assistant.'},
-            {'role': 'user', 'content': caption},
+            {'role': 'user', 'content': create_instruction(caption)},
             {'role': 'assistant', 'content': bricks},
         ]
         return messages
