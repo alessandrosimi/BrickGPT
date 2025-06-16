@@ -6,7 +6,7 @@
 <a href="https://huggingface.co/spaces/cmu-gil/BrickGPT-Demo" target="_blank"><img src=https://img.shields.io/badge/%F0%9F%A4%97%20HuggingFace-Demo-blue.svg alt="HuggingFace" height=22px></a>
 </div>
 
-***Generating Physically Stable and Buildable LEGO® Designs from Text***  
+***Generating Physically Stable and Buildable Brick Structures from Text***  
 [Ava Pun*](https://avapun.com/),
 [Kangle Deng*](https://dunbar12138.github.io/),
 [Ruixuan Liu*](https://waynekyrie.github.io/),
@@ -195,7 +195,7 @@ If you find this repository useful for your research, please cite the following 
 
 ```bibtex
 @article{pun2025brickgpt,
-    title   = {Generating Physically Stable and Buildable LEGO Designs from Text},
+    title   = {Generating Physically Stable and Buildable Brick Structures from Text},
     author  = {Pun, Ava and Deng, Kangle and Liu, Ruixuan and Ramanan, Deva and Liu, Changliu and Zhu, Jun-Yan},
     journal = {arXiv preprint arXiv:2505.05469},
     year    = {2025}
