@@ -181,9 +181,9 @@ class BrickStructure:
     def brick_floats(self, brick: Brick) -> bool:
         if brick.z == 0:
             return False  # Supported by ground
-        if np.any(self.voxel_occupancy[*brick.slice_2d, brick.z - 1]):
+        if np.any(self.voxel_occupancy[brick.slice_2d[0], brick.slice_2d[1], brick.z - 1]):
             return False  # Supported from below
-        if brick.z != self.world_dim - 1 and np.any(self.voxel_occupancy[*brick.slice_2d, brick.z + 1]):
+        if brick.z != self.world_dim - 1 and np.any(self.voxel_occupancy[brick.slice_2d[0], brick.slice_2d[1], brick.z + 1]):
             return False  # Supported from above
         return True
 
