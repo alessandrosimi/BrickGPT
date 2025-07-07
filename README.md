@@ -21,7 +21,9 @@ arXiv 2025
 This is the official repository for **BrickGPT**, the first approach for generating physically stable toy
 brick models from text prompts.
 
-<video src='https://github.com/user-attachments/assets/cec2cb09-f1de-443f-9c1b-0f17896336a7' width=480/></video>
+
+<video src='https://github.com/user-attachments/assets/6760f55c-a413-4baf-abf1-2ad61bb1a427' width=480/></video>
+
 
 ## Results
 
