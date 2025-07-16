@@ -1,20 +1,20 @@
 # BrickGPT
 
-<div>
-<a href="https://avalovelace1.github.io/BrickGPT/"><img src="https://img.shields.io/badge/Project_Page-Website-green?logo=googlechrome&logoColor=white" alt="Project Page" height=22px></a>
-<a href="https://arxiv.org/abs/2505.05469" target="_blank"><img src=https://img.shields.io/badge/ArXiv-Paper-b5212f.svg?logo=arxiv alt="ArXiv" height=22px></a>
-<a href="https://huggingface.co/spaces/cmu-gil/BrickGPT-Demo" target="_blank"><img src=https://img.shields.io/badge/%F0%9F%A4%97%20HuggingFace-Demo-blue.svg alt="HuggingFace" height=22px></a>
-</div>
-
 ***Generating Physically Stable and Buildable Brick Structures from Text***  
+**ICCV 2025**  
 [Ava Pun*](https://avapun.com/),
 [Kangle Deng*](https://dunbar12138.github.io/),
 [Ruixuan Liu*](https://waynekyrie.github.io/),
 [Deva Ramanan](https://www.cs.cmu.edu/~deva/),
 [Changliu Liu](https://www.ri.cmu.edu/ri-faculty/changliu-liu/),
 [Jun-Yan Zhu](https://www.cs.cmu.edu/~junyanz/)  
-Carnegie Mellon University<br>
-ICCV 2025
+Carnegie Mellon University  
+
+<a href="https://arxiv.org/abs/2505.05469" target="_blank"><img src="https://img.shields.io/badge/arXiv-2505.05469-b5212f.svg?logo=arxiv" alt="arXiv Paper" height=22px></a>
+<a href="https://avalovelace1.github.io/BrickGPT/" target="_blank"><img src="https://img.shields.io/badge/Website-Project%20Page-0369a1?logo=googlechrome&logoColor=white" alt="Project Page" height=22px></a>
+<a href="https://huggingface.co/spaces/cmu-gil/BrickGPT-Demo" target="_blank"><img src="https://img.shields.io/badge/Hugging%20Face-Demo-FFD21E?logo=huggingface" alt="Hugging Face Demo" height=22px></a>
+<a href="https://huggingface.co/datasets/AvaLovelace/StableText2Brick" target="_blank"><img src="https://img.shields.io/badge/Hugging%20Face-Dataset-FFD21E?logo=huggingface" alt="Hugging Face Dataset" height=22px></a>
+<a href="https://github.com/AvaLovelace1/BrickGPT/blob/main/LICENSE" target="_blank"><img src="https://img.shields.io/github/license/AvaLovelace1/BrickGPT?color=15803d&label=%F0%9F%93%84%20License" alt="Licence"></a>
 
 ---
 
