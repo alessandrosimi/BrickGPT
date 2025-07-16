@@ -10,11 +10,11 @@
 [Jun-Yan Zhu](https://www.cs.cmu.edu/~junyanz/)  
 Carnegie Mellon University  
 
-<a href="https://arxiv.org/abs/2505.05469" target="_blank"><img src="https://img.shields.io/badge/arXiv-2505.05469-b5212f.svg?logo=arxiv" alt="arXiv Paper" height=22px></a>
-<a href="https://avalovelace1.github.io/BrickGPT/" target="_blank"><img src="https://img.shields.io/badge/Website-Project%20Page-0369a1?logo=googlechrome&logoColor=white" alt="Project Page" height=22px></a>
-<a href="https://huggingface.co/spaces/cmu-gil/BrickGPT-Demo" target="_blank"><img src="https://img.shields.io/badge/Hugging%20Face-Demo-FFD21E?logo=huggingface" alt="Hugging Face Demo" height=22px></a>
-<a href="https://huggingface.co/datasets/AvaLovelace/StableText2Brick" target="_blank"><img src="https://img.shields.io/badge/Hugging%20Face-Dataset-FFD21E?logo=huggingface" alt="Hugging Face Dataset" height=22px></a>
-<a href="https://github.com/AvaLovelace1/BrickGPT/blob/main/LICENSE" target="_blank"><img src="https://img.shields.io/github/license/AvaLovelace1/BrickGPT?color=15803d&label=%F0%9F%93%84%20License" alt="Licence"></a>
+[![Paper](https://img.shields.io/badge/arXiv-2505.05469-b5212f.svg?logo=arxiv)](https://arxiv.org/abs/2505.05469)
+[![Project Page](https://img.shields.io/badge/Website-Project%20Page-0369a1?logo=googlechrome&logoColor=white)](https://avalovelace1.github.io/BrickGPT/)
+[![Demo](https://img.shields.io/badge/Hugging%20Face-Demo-FFD21E?logo=huggingface)](https://huggingface.co/spaces/cmu-gil/BrickGPT-Demo)
+[![Dataset](https://img.shields.io/badge/Hugging%20Face-Dataset-FFD21E?logo=huggingface)](https://huggingface.co/datasets/AvaLovelace/StableText2Brick)
+[![Licence](https://img.shields.io/github/license/AvaLovelace1/BrickGPT?color=15803d&label=%F0%9F%93%84%20License)](https://github.com/AvaLovelace1/BrickGPT/blob/main/LICENSE)
 
 ---
 
