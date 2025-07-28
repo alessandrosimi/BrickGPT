@@ -196,10 +196,10 @@ different licenses:
 If you find this repository useful for your research, please cite the following work.
 
 ```bibtex
-@article{pun2025brickgpt,
+@inproceedings{pun2025brickgpt,
     title   = {Generating Physically Stable and Buildable Brick Structures from Text},
     author  = {Pun, Ava and Deng, Kangle and Liu, Ruixuan and Ramanan, Deva and Liu, Changliu and Zhu, Jun-Yan},
-    journal = {arXiv preprint arXiv:2505.05469},
+    journal = {ICCV},
     year    = {2025}
 }
 ```
