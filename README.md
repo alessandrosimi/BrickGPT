@@ -8,7 +8,7 @@
 [Deva Ramanan](https://www.cs.cmu.edu/~deva/),
 [Changliu Liu](https://www.ri.cmu.edu/ri-faculty/changliu-liu/),
 [Jun-Yan Zhu](https://www.cs.cmu.edu/~junyanz/)  
-Carnegie Mellon University  
+Carnegie Mellon University
 
 [![Paper](https://img.shields.io/badge/arXiv-2505.05469-b5212f.svg?logo=arxiv)](https://arxiv.org/abs/2505.05469)
 [![Project Page](https://img.shields.io/badge/Website-Project%20Page-0369a1?logo=googlechrome&logoColor=white)](https://avalovelace1.github.io/BrickGPT/)
@@ -21,9 +21,7 @@ Carnegie Mellon University
 This is the official repository for **BrickGPT**, the first approach for generating physically stable toy
 brick models from text prompts.
 
-
 <video src='https://github.com/user-attachments/assets/6760f55c-a413-4baf-abf1-2ad61bb1a427' width=480/></video>
-
 
 ## Results
 
@@ -39,13 +37,13 @@ Examples of textured and colored brick models:
 
 ### Prerequisites
 
-- **Llama-3.2-1B-Instruct:** BrickGPT is fine-tuned from meta-llama/Llama-3.2-1B-Instruct, a gated model. Request access
-  to the model [here](https://huggingface.co/meta-llama/Llama-3.2-1B-Instruct), then generate
+- **Llama-3.2-1B-Instruct:** BrickGPT is fine-tuned from meta-llama/Llama-3.2-1B-Instruct, a gated
+  model. [Request access to the model](https://huggingface.co/meta-llama/Llama-3.2-1B-Instruct), then generate
   a [Hugging Face user access token](https://huggingface.co/docs/hub/en/security-tokens) and set it as an environment
   variable: `export HF_TOKEN=<your_token>`. The model will be automatically downloaded upon running the code.
 - **Gurobi (optional but recommended):** Running stability analysis requires
   a [Gurobi license](https://www.gurobi.com/downloads/) to use Gurobi. Academics may request a free license from the
-  Gurobi website [here](https://www.gurobi.com/academia/academic-program-and-licenses/); after obtaining the license,
+  [Gurobi website](https://www.gurobi.com/academia/academic-program-and-licenses/); after obtaining the license,
   place it in your *home directory* or
   another [recommended location](https://support.gurobi.com/hc/en-us/articles/360013417211-Where-do-I-place-the-Gurobi-license-file-gurobi-lic).
     - If you do not have access to Gurobi, you can run the code with the option `--use_gurobi False` to use a simpler
@@ -56,7 +54,7 @@ Examples of textured and colored brick models:
 This repo uses the Python project manager [uv](https://docs.astral.sh/uv/). To install this repo as a standalone
 project, first install all prerequisites. Then,
 
-1. Clone the repo: `git clone "https://github.com/AvaLovelace1/BrickGPT.git" && cd BrickGPT`.
+1. Clone the repo: `git clone https://github.com/AvaLovelace1/BrickGPT.git && cd BrickGPT`.
 2. *(Optional, required for running the `infer` script and texturing)* Follow these instructions to install ImportLDraw,
    required for rendering brick structure visualizations:
     - Install the ImportLDraw submodule with `git submodule update --init`.
@@ -96,8 +94,7 @@ uv run infer
 ```
 
 This script starts an interactive session where you can input a prompt and get a response from the model.
-The model weights will automatically be downloaded from Hugging Face. They can be
-found [here](https://huggingface.co/AvaLovelace/BrickGPT).
+The [model weights](https://huggingface.co/AvaLovelace/BrickGPT) will automatically be downloaded from Hugging Face.
 
 If you wish to run inference with a different set of model weights, specify them using the `--model_name_or_path`
 option. See `uv run infer -h` for a full list of options.
@@ -149,13 +146,20 @@ software.
 ## Running texturing
 
 The subdirectory `src/texture` contains the code for generating the UV texture or per-brick color given a brick design.
-To run texturing, `cd` into `src/texture` and follow the instructions in the `README.md` file [there](src/texture).
+To run texturing, `cd` into [src/texture](src/texture) and follow the instructions in the `README.md` file there.
+
+## Running mesh-to-brick
+
+The subdirectory `src/mesh2brick` contains the code for converting a 3D object mesh into a brick structure.
+To run mesh-to-brick, `cd` into [src/mesh2brick](src/mesh2brick) and follow the instructions in the `README.md` file
+there.
 
 ## Running fine-tuning
 
 BrickGPT was created by
 fine-tuning [Llama-3.2-1B-Instruct](https://huggingface.co/meta-llama/Llama-3.2-1B-Instruct)
-on the custom brick structure dataset [StableText2Brick](https://huggingface.co/datasets/AvaLovelace/StableText2Brick), converted
+on the custom brick structure dataset [StableText2Brick](https://huggingface.co/datasets/AvaLovelace/StableText2Brick),
+converted
 into instructional format. We used Hugging Face [TRL](https://huggingface.co/docs/trl/index)
 with [Accelerate](https://huggingface.co/docs/accelerate/index) for fine-tuning.
 
@@ -165,8 +169,10 @@ Then, follow these instructions:
 1. Prepare the brick structure dataset for fine-tuning with
    `uv run prepare_finetuning_dataset --input_path AvaLovelace/StableText2Brick --output_path [FINETUNING_DATASET_PATH]`.
    This converts the dataset into the instructional format required for fine-tuning LLaMA.
-    - If you wish to run fine-tuning with your own brick structure dataset, replace `AvaLovelace/StableText2Brick` with the path to
-      your dataset. This dataset should have the fields "captions" and "bricks". The "bricks" field should contain a brick
+    - If you wish to run fine-tuning with your own brick structure dataset, replace `AvaLovelace/StableText2Brick` with
+      the path to
+      your dataset. This dataset should have the fields "captions" and "bricks". The "bricks" field should contain a
+      brick
       structure in the text format described in the paper, and the "captions" field should contain a list of one or more
       descriptions of the brick structure.
 2. Download the pretrained [Llama-3.2-1B-Instruct model](https://huggingface.co/meta-llama/Llama-3.2-1B-Instruct) to
